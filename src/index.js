@@ -1,13 +1,15 @@
 const express = require('express');
-const routes = require('./routes/team');
+require('./utils/mongoose');
+
+const teamRouters = require('./routes/team');
 
 const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.json());
+app.use('/teams', teamRouters);
 
-app.use('/teams', routes);
-
+// Delete following
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>');
 });
