@@ -1,17 +1,29 @@
 const mongoose = require('mongoose');
 
 const mealListSchema = new mongoose.Schema({
-  name: {},
-  ingredients: {},
+  name: {
+
+  },
+  calorie: {
+
+  },
+  tanshui: {
+
+  },
+  reliang: {
+
+  },
+  filter1: {
+
+  },
+  filter2: {
+
+  },
+  filter3: {
+
+  }
 });
 
-// eslint-disable-next-line func-names
-mealListSchema.pre('save', async function (next) {
-  // TO DO: validation
-
-  next();
-});
-
-const MealList = mongoose.model('Food-preference', mealListSchema);
+const MealList = mongoose.model('MealList', mealListSchema);
 
 module.exports = MealList;

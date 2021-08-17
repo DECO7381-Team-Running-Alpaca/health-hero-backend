@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const meal = require('./mealList');
+const Allergy = require('./allergy');
+const MealList = require('./mealList');
+const Preference = require('./preference');
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,14 +25,6 @@ const userSchema = new mongoose.Schema(
         }
       },
     },
-    dob: {
-      type: Date,
-      required: true,
-    },
-    gender: {
-      type: String,
-      required: true,
-    },
     height: {
       type: Number,
       required: true,
@@ -43,17 +37,11 @@ const userSchema = new mongoose.Schema(
       min: 30,
       max: 250,
     },
-    preference: {
-      type: Array,
-      default: [],
-    },
-    allergy: {
-      type: Array,
-      default: [],
-    },
-    current_plan: [meal],
+    preferences: [Preference],
+    allergies: [Allergy],
+    current_plan: [MealList],
   },
-  { _id: true }
+  { _id: false }
 );
 
 // eslint-disable-next-line func-names
