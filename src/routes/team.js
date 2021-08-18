@@ -6,12 +6,12 @@ const {
   deleteMemberById,
 } = require('../controllers/team');
 
-const teamRouter = express.Router();
+const router = express.Router();
 
 // TODO: add ID validator middleware
-teamRouter.get('', getMembers);
-teamRouter.post('', addMember);
-teamRouter.put('/:id', updateMemberById);
-teamRouter.delete('/:id', deleteMemberById);
+router.get('', getMembers);
+router.post('', addMember);
+router.put('/:id', updateMemberById);
+router.delete('/:id', deleteMemberById);
 
-module.exports = teamRouter;
+module.exports = router;
