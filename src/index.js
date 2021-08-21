@@ -4,8 +4,8 @@ require('./utils/mongoose');
 const teamRouters = require('./routes/team');
 const userRouter = require('./routes/user');
 
-const port = process.env.PORT || 3000;
 const app = express();
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use('/teams', teamRouters);

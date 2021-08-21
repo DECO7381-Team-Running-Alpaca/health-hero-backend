@@ -1,14 +1,22 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 // const auth = require('../middlewares/validator');
 const router = new express.Router();
 
 // Sign up
+// eslint-disable-next-line consistent-return
 router.post('/users', async (req, res) => {
   const user = new User(req.body);
 
   try {
-    await user.save();
+    const existUser = await User.findOne({ user_name: user.user_name });
+    if (existUser) {
+      return res.status(400).send('Username unavailable. User has existed.');
+    }
+
+    user.password = await bcrypt.hash(user.password, 8);
+    user.save();
 
     // TODO: AUTHENTIFICATION
 
@@ -19,6 +27,7 @@ router.post('/users', async (req, res) => {
   } catch (error) {
     res.status(400).send({
       message: 'Please make sure that body is well organized.',
+      error,
     });
   }
 });
@@ -26,17 +35,25 @@ router.post('/users', async (req, res) => {
 // Log in
 router.post('/users/login', async (req, res) => {
   try {
-    const user = await User.findByCredential(
-      req.body.user_name,
-      req.body.password
-    );
+    const user = await User.findOne({ user_name: req.body.user_name });
+
+    if (!user) {
+      throw Error();
+    }
+
+    const isMatch = await bcrypt.compare(req.body.password, user.password);
+
+    if (!isMatch) {
+      throw Error();
+    }
+
     res.send({
       message: 'You have been logged in.',
       user,
     });
   } catch (error) {
     res.status(400).send({
-      message: 'Username/Password not correct.',
+      message: 'You Shall Not Pass!',
     });
   }
 });
@@ -51,9 +68,9 @@ router.get('/users/all', async (req, res) => {
 });
 
 // Get user
-router.get('/users/:id', async (req, res) => {
+router.get('/users/:user_name', async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.params.id });
+    const user = await User.findOne({ user_name: req.params.user_name });
 
     if (!user) {
       res.statuss(404).send({
@@ -71,7 +88,7 @@ router.get('/users/:id', async (req, res) => {
 
 // Update current user
 // eslint-disable-next-line consistent-return
-router.patch('users/:id', async (req, res) => {
+router.patch('/users/:user_name', async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = [
     'password',
@@ -92,7 +109,7 @@ router.patch('users/:id', async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ _id: req.params.id });
+    const user = await User.findOne({ user_name: req.params.user_name });
 
     if (!user) {
       return res.status(404).send({
@@ -111,6 +128,30 @@ router.patch('users/:id', async (req, res) => {
   } catch (e) {
     res.status(500).send({
       message: 'Unexpected Error.',
+    });
+  }
+});
+
+// eslint-disable-next-line consistent-return
+router.delete('/users/:user_name', async (req, res) => {
+  try {
+    const user = await User.findOneAndDelete({
+      user_name: req.params.user_name,
+    });
+
+    if (!user) {
+      return res.status(400).send({
+        message: 'User not found.',
+      });
+    }
+
+    res.send({
+      message: 'User deleted.',
+      user,
+    });
+  } catch (error) {
+    res.status(400).send({
+      message: 'Delete Failed.',
     });
   }
 });
