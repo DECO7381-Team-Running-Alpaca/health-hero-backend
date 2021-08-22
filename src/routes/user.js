@@ -117,19 +117,11 @@ router.get('/users/me', validator, async (req, res) => {
   res.send(req.user);
 });
 
-// Update current user
+// Update current user by username
 // eslint-disable-next-line consistent-return
 router.patch('/users/dev/:user_name', async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = [
-    'password',
-    'email',
-    'height',
-    'weight',
-    'preferences',
-    'allergies',
-    'current_plan',
-  ];
+  const allowedUpdates = ['user_name', 'password', 'email', 'height', 'weight'];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
@@ -167,15 +159,7 @@ router.patch('/users/dev/:user_name', async (req, res) => {
 // eslint-disable-next-line consistent-return
 router.patch('/users/me', validator, async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = [
-    'password',
-    'email',
-    'height',
-    'weight',
-    'preferences',
-    'allergies',
-    'current_plan',
-  ];
+  const allowedUpdates = ['password', 'email', 'height', 'weight'];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
