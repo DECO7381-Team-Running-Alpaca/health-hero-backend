@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-// const Allergy = require('./allergy');
+const jwt = require('jsonwebtoken');
 // const MealList = require('./mealList');
-// const Preference = require('./preference');
 
 const userSchema = new mongoose.Schema({
   user_name: {
@@ -37,10 +36,39 @@ const userSchema = new mongoose.Schema({
     min: 30,
     max: 250,
   },
-  // preferences: [Preference],
-  // allergies: [Allergy],
+  preferences: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Preference',
+    },
+  ],
+  allergies: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Allergy',
+    },
+  ],
   // current_plan: [MealList],
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
+
+// eslint-disable-next-line func-names
+userSchema.methods.generateAuthToken = async function () {
+  const user = this;
+  // eslint-disable-next-line no-underscore-dangle
+  const token = jwt.sign({ _id: user._id.toString() }, 'healthhero');
+
+  user.tokens = user.tokens.concat({ token });
+  await user.save();
+  return token;
+};
 
 const User = mongoose.model('User', userSchema);
 
