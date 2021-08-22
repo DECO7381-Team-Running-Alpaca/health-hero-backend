@@ -7,6 +7,7 @@ const router = new express.Router();
 // eslint-disable-next-line consistent-return
 router.post('/preferences', async (req, res) => {
   const preference = new Preference(req.body);
+  console.log(preference);
 
   try {
     const existPreference = await Preference.findOne({
@@ -81,3 +82,5 @@ router.delete('/preferences/:p_name', async (req, res) => {
     });
   }
 });
+
+module.exports = router;

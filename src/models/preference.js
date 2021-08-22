@@ -7,7 +7,7 @@ const preferenceSchema = new mongoose.Schema({
     unique: true,
     trim: true,
     lowercase: true,
-  }
+  },
 });
 
 const Preference = mongoose.model('Preference', preferenceSchema);
