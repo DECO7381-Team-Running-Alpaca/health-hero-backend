@@ -3,7 +3,6 @@ const express = require('express');
 const User = require('../models/user');
 const validator = require('../middlewares/validator');
 const Preference = require('../models/preference');
-const Allergy = require('../models/allergy');
 // const Allergy = require('../models/preference');
 
 const router = new express.Router();
@@ -260,6 +259,7 @@ router.post('/users/preferences/:p_name', validator, async (req, res) => {
   }
 });
 
+
 // Remove a preference from a user
 router.delete('/users/preferences/:p_name', validator, async (req, res) => {
     // 1.拿到目标 2.检查目标是否存在于Preference库中 3. 检查目标是否存在于user库中 4. 从User内删除
@@ -342,7 +342,7 @@ router.post('/users/allergies/:a_name', validator, async (req, res) => {
 router.delete('/users/allergies/:a_name', validator, async (req, res) => {
   // 1.拿到目标 2.检查目标是否存在于Preference库中 3. 检查目标是否存在于user库中 4. 从User内删除
   try{
-    const targerAllergy = await Allergy.findOne({ p_name: req.params.p_name }); // 1+2
+    const targerAllergy = await Allergy.findOne({ a_name: req.params.a_name }); // 1+2
     const userAllergy = req.user.allergies //4 拿到user的preference
 
     userAllergy.forEach((allergy) => {
@@ -386,6 +386,46 @@ router.get('/users/allergies/', validator, async (req, res) => {
 // add mutipule preferences by body
 // 1. 从req.body 中读取[] 2.对其进行遍历， 判断其内每个元素是否存在于 Preferece的库中 
 //3. 针对在库中的， 再次进行判断是否于user preference重复
-// 4.将不重复的加入， 重复的告知用户具体那个preference重复
+// *4.将不重复的加入， 重复的告知用户具体那个preference重复
+router.post('/users/preferences/', validator, async (req, res) => {
+  try{
+    const targetPreferences = await req.body
+    
+    const userPreferences = await req.user.preferences
+    
+    targetPreferences.forEach((preference, index) =>{
+      //check how many loops I have run
+      console.log(preference)
+      //check detail for every loop I got
+      console.log('This is ' + index + "th loop in for each")
+      if(preference === Preference.findOne({p_name :(req.body[index])})){
+        console.log('Im checking preference ')
+        userPreferences.forEach((uPreference) => {
+          // check where I am
+          console.log("imhere")
+          if(uPreference.toString() !== preference._id.toString()){
+            req.user.preferences = req.user.preferences.concat(preference)
+            req.save()
+            res.status(200).send({
+              message:"add!",
+              user:req.user
+            })
+          }
+        })
+        }
+      
+    })
+    //  res.status('404').send({
+    //    message: "wrong input"
+    //  })
+  }catch(error){
+    res.status(400).send({
+      message:" fail to add"
+    })
+  }
+ 
+   
+  
 
+});
 module.exports = router;
