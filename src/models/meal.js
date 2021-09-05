@@ -1,27 +1,25 @@
 const mongoose = require('mongoose');
 
 const mealListSchema = new mongoose.Schema({
-  name: {
+  title: {
 
   },
-  calorie: {
+  source_url: {
 
   },
-  tanshui: {
+  dish_types: [
+    {
+
+    }
+  ],
+  ingredients: [
+    {
+
+    }
+  ],
+  calories: {
 
   },
-  reliang: {
-
-  },
-  filter1: {
-
-  },
-  filter2: {
-
-  },
-  filter3: {
-
-  }
 });
 
 const MealList = mongoose.model('MealList', mealListSchema);
