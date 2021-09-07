@@ -71,8 +71,4 @@ router.delete('/users/allergies/:a_name', validator, removeAllergy);
 // Get all allergies from a user
 router.get('/users/allergies/', validator, getCurrentUserAllergies);
 
-// all multiple preferences
-
-// add multiple allergies
-
 module.exports = router;

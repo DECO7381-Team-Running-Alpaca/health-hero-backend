@@ -4,8 +4,7 @@
   "description": "Health Hero backend for DECO7381",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js"
+    "start": "node src/index.js"
   },
   "author": "Zhenyuan Li, Zhiyuan Gan, Zipu Tang",
   "license": "ISC",
