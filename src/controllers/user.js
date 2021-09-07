@@ -1,6 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable consistent-return */
 const User = require('../models/user');
 const Preference = require('../models/preference');
+const Allergy = require('../models/allergy');
 
 // Sign Up
 const signUp = async (req, res) => {
@@ -218,50 +220,55 @@ const addPreference = async (req, res) => {
       message: 'Adding failed.',
     });
   }
-}
+};
 
- // Remove a preference from a user
- const removePrf =  async (req, res) => {
-    try{
-      const targerPreference = await Preference.findOne({ p_name: req.params.p_name }); 
-      const userPreference = req.user.preferences 
-      userPreference.forEach((preference) => {
-      if(preference.toString() === targerPreference._id.toString()){
-          req.user.preferences = req.user.preferences.remove(targerPreference)
-        
-          res.send({
-              message:"delete successfully!",
-              user: req.user
-    })
+// Remove a preference from a user
+const removePreference = async (req, res) => {
+  try {
+    const targerPreference = await Preference.findOne({
+      p_name: req.params.p_name,
+    });
+    const userPreference = req.user.preferences;
+    userPreference.forEach((preference) => {
+      if (preference.toString() === targerPreference._id.toString()) {
+        req.user.preferences = req.user.preferences.remove(targerPreference);
+
+        res.send({
+          message: 'delete successfully!',
+          user: req.user,
+        });
       }
-    })
+    });
     res.status(402).send({
-      message: "There is not such a preference"
-    })}catch(error){
-      res.status(402).send({
-        message:"fail to delete"
-      })
-    }
-}
+      message: 'There is not such a preference',
+    });
+  } catch (error) {
+    res.status(402).send({
+      message: 'fail to delete',
+    });
+  }
+};
+
 // Get all preferences from a user
-const allprf =  async (req, res) => {
+const getCurrentUserPreferences = async (req, res) => {
   try {
     const allPreferences = req.user.preferences;
-    if(allPreferences.lengh === 0){
+    if (allPreferences.lengh === 0) {
       res.status(402).send({
-        message:"No preference for this user"
-      })
+        message: 'No preference for this user',
+      });
     }
     res.send({
       message: 'Preferece has been founded.',
-      allPreferences
+      allPreferences,
     });
   } catch (error) {
     res.status(400).send({
       message: 'cant find preferences.',
     });
   }
-}
+};
+
 // Add an allergy to current user by a_name
 const addAllergy = async (req, res) => {
   try {
@@ -295,64 +302,64 @@ const addAllergy = async (req, res) => {
       message: 'Adding failed.',
     });
   }
-}
+};
 
 // Remove an allergy from a user
-const removeAllergy =  async (req, res) => {
- 
-  try{
+const removeAllergy = async (req, res) => {
+  try {
     const targerAllergy = await Allergy.findOne({ a_name: req.params.a_name }); // 1+2
-    const userAllergy = req.user.allergies 
+    const userAllergy = req.user.allergies;
 
     userAllergy.forEach((allergy) => {
-    if(allergy.toString() === targerAllergy._id.toString()){
-        req.user.allergies = req.user.allergies.remove(targerAllergy)
-      
+      if (allergy.toString() === targerAllergy._id.toString()) {
+        req.user.allergies = req.user.allergies.remove(targerAllergy);
+
         res.send({
-            message:"delete successfully!",
-            user: req.user
-  })
-    }
-  })
-  res.status(402).send({
-    message: "There is not such an allergy"
-  })}catch(error){
+          message: 'delete successfully!',
+          user: req.user,
+        });
+      }
+    });
     res.status(402).send({
-      message:"fail to delete"
-    })
+      message: 'There is not such an allergy',
+    });
+  } catch (error) {
+    res.status(402).send({
+      message: 'fail to delete',
+    });
   }
-}
+};
 
 // Get all allergies from a user
-const allAllergy = async (req, res) => {
+const getCurrentUserAllergies = async (req, res) => {
   try {
     const allAllergies = req.user.allergies;
-    if(allAllergies.lengh === 0){
+    if (allAllergies.lengh === 0) {
       res.status(402).send({
-        message:"No allergies for this user"
-      })
+        message: 'No allergies for this user',
+      });
     }
     res.send({
       message: 'Allergies has been founded.',
-      allAllergies
+      allAllergies,
     });
   } catch (error) {
     res.status(400).send({
       message: 'cant find allergies.',
     });
   }
-}
+};
 
 // add mutipule preferences by body
-// 1. 从req.body 中读取[] 2.对其进行遍历， 判断其内每个元素是否存在于 Preferece的库中 
-//3. 针对在库中的， 再次进行判断是否于user preference重复
+// 1. 从req.body 中读取[] 2.对其进行遍历， 判断其内每个元素是否存在于 Preferece的库中
+//  3. 针对在库中的， 再次进行判断是否于user preference重复
 // *4.将不重复的加入， 重复的告知用户具体那个preference重复
 // router.post('/users/preferences/', validator, async (req, res) => {
 //   try{
 //     const targetPreferences = await req.body
-    
+
 //     const userPreferences = await req.user.preferences
-    
+
 //     targetPreferences.forEach((preference, index) =>{
 //       //check how many loops I have run
 //       console.log(preference)
@@ -373,7 +380,7 @@ const allAllergy = async (req, res) => {
 //           }
 //         })
 //         }
-      
+
 //     })
 //     //  res.status('404').send({
 //     //    message: "wrong input"
@@ -383,9 +390,6 @@ const allAllergy = async (req, res) => {
 //       message:" fail to add"
 //     })
 //   }
- 
-   
-  
 
 // });
 
@@ -401,9 +405,9 @@ module.exports = {
   deleteUserByUsername,
   deleteCurrentUser,
   addPreference,
-  removePrf,
-  allprf,
+  removePreference,
+  getCurrentUserPreferences,
   addAllergy,
   removeAllergy,
-  allAllergy
+  getCurrentUserAllergies,
 };
