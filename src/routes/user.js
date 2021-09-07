@@ -9,9 +9,14 @@ const {
   getCurrentUser,
   updateUserByUsername,
   updateCurrentUser,
-  deleteCurrentUser,
   deleteUserByUsername,
+  deleteCurrentUser,
   addPreference,
+  removePreference,
+  getCurrentUserPreferences,
+  addAllergy,
+  removeAllergy,
+  getCurrentUserAllergies,
 } = require('../controllers/user');
 
 const validator = require('../middlewares/validator');
@@ -52,13 +57,18 @@ router.delete('/users/me', validator, deleteCurrentUser);
 router.post('/users/preferences/:p_name', validator, addPreference);
 
 // Remove a preference from a user
+router.delete('/users/preferences/:p_name', validator, removePreference);
 
 // Get all preferences from a user
+router.get('/users/preferences/', validator, getCurrentUserPreferences);
 
 // Add an allergy to current user by a_name
+router.post('/users/allergies/:a_name', validator, addAllergy);
 
 // Remove an allergy from a user
+router.delete('/users/allergies/:a_name', validator, removeAllergy);
 
 // Get all allergies from a user
+router.get('/users/allergies/', validator, getCurrentUserAllergies);
 
 module.exports = router;
