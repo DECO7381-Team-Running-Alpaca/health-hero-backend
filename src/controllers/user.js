@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable consistent-return */
 const User = require('../models/user');
 const Preference = require('../models/preference');
@@ -229,7 +230,6 @@ const removePreference = async (req, res) => {
     });
     const userPreference = req.user.preferences;
     userPreference.forEach((preference) => {
-      
       if (preference.toString() === targerPreference._id.toString()) {
         req.user.preferences = req.user.preferences.remove(targerPreference);
 
@@ -311,7 +311,6 @@ const removeAllergy = async (req, res) => {
     const userAllergy = req.user.allergies;
 
     userAllergy.forEach((allergy) => {
-      
       if (allergy.toString() === targerAllergy._id.toString()) {
         req.user.allergies = req.user.allergies.remove(targerAllergy);
 
