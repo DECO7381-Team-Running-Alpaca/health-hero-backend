@@ -23,6 +23,27 @@ const validator = require('../middlewares/validator');
 
 const router = new express.Router();
 
+/**
+ * @swagger
+ * components:
+ *  schema:
+ *  User:
+ *    type: object
+ *    required:
+ *      - user_name
+ *      - password
+ *      - email
+ *      - height
+ *      - weight
+ *    properties:
+ *      id:
+ *        type: string
+ *        description: An auto generated id of a user
+ *      user_name:
+ *        type: string
+ *        description: User name
+ */
+
 // Sign up
 router.post('/users', signUp);
 
