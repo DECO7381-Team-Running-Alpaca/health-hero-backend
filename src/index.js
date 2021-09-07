@@ -10,6 +10,10 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('<h1>Welcome to Health-Hero</h1>');
+});
+
 app.use(userRouter);
 app.use(preferenceRouter);
 app.use(allergyRouter);
