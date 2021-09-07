@@ -1,7 +1,6 @@
 const express = require('express');
 require('./utils/mongoose');
 
-
 const userRouter = require('./routes/user');
 const preferenceRouter = require('./routes/preference');
 const allergyRouter = require('./routes/allergy');

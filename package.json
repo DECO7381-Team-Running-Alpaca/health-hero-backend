@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js"
+    "start": "node src/index.js"
   },
   "author": "Zhenyuan Li, Zhiyuan Gan, Zipu Tang",
   "license": "ISC",
@@ -28,5 +28,13 @@
     "eslint-plugin-prettier": "^3.4.0",
     "nodemon": "^2.0.12",
     "prettier": "^2.3.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DECO7381-Team-Running-Alpaca/health-hero-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DECO7381-Team-Running-Alpaca/health-hero-backend/issues"
+  },
+  "homepage": "https://github.com/DECO7381-Team-Running-Alpaca/health-hero-backend#readme"
 }
