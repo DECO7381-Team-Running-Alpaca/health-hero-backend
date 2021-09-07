@@ -19,3 +19,5 @@ app.use(preferenceRouter);
 app.use(allergyRouter);
 
 app.listen(port, () => console.log(`Listening on ${port}`));
+
+module.exports = app;
