@@ -383,49 +383,5 @@ router.get('/users/allergies/', validator, async (req, res) => {
   }
 });
 
-// add mutipule preferences by body
-// 1. 从req.body 中读取[] 2.对其进行遍历， 判断其内每个元素是否存在于 Preferece的库中 
-//3. 针对在库中的， 再次进行判断是否于user preference重复
-// *4.将不重复的加入， 重复的告知用户具体那个preference重复
-router.post('/users/preferences/', validator, async (req, res) => {
-  try{
-    const targetPreferences = await req.body
-    
-    const userPreferences = await req.user.preferences
-    
-    targetPreferences.forEach((preference, index) =>{
-      //check how many loops I have run
-      console.log(preference)
-      //check detail for every loop I got
-      console.log('This is ' + index + "th loop in for each")
-      if(preference === Preference.findOne({p_name :(req.body[index])})){
-        console.log('Im checking preference ')
-        userPreferences.forEach((uPreference) => {
-          // check where I am
-          console.log("imhere")
-          if(uPreference.toString() !== preference._id.toString()){
-            req.user.preferences = req.user.preferences.concat(preference)
-            req.save()
-            res.status(200).send({
-              message:"add!",
-              user:req.user
-            })
-          }
-        })
-        }
-      
-    })
-    //  res.status('404').send({
-    //    message: "wrong input"
-    //  })
-  }catch(error){
-    res.status(400).send({
-      message:" fail to add"
-    })
-  }
- 
-   
-  
 
-});
 module.exports = router;
