@@ -218,7 +218,7 @@ const addPreference = async (req, res) => {
       message: 'Adding failed.',
     });
   }
-}
+};
 
 module.exports = {
   signUp,
