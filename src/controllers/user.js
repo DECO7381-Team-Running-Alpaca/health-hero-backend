@@ -229,7 +229,7 @@ const removePreference = async (req, res) => {
     });
     const userPreference = req.user.preferences;
     userPreference.forEach((preference) => {
-      // eslint-disable-next-line no-underscore-dangle
+      
       if (preference.toString() === targerPreference._id.toString()) {
         req.user.preferences = req.user.preferences.remove(targerPreference);
 
@@ -311,7 +311,7 @@ const removeAllergy = async (req, res) => {
     const userAllergy = req.user.allergies;
 
     userAllergy.forEach((allergy) => {
-      // eslint-disable-next-line no-underscore-dangle
+      
       if (allergy.toString() === targerAllergy._id.toString()) {
         req.user.allergies = req.user.allergies.remove(targerAllergy);
 
