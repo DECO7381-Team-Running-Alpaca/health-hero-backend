@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('<h1>Welcome</h1>');
+  res.send('<h1>Welcome to Health Hero</h1>');
 });
 
 app.use(userRouter);
