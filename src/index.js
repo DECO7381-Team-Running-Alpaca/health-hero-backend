@@ -1,35 +1,36 @@
+require('dotenv').config();
 const express = require('express');
-const swaggerUI = require('swagger-ui-express');
-const swaggerJsDoc = require('swagger-jsdoc');
-require('./utils/mongoose');
+// const swaggerUI = require('swagger-ui-express');
+// const swaggerJsDoc = require('swagger-jsdoc');
+const { connectToDB } = require('./utils/mongoose');
 
 const userRouter = require('./routes/user');
 const preferenceRouter = require('./routes/preference');
 const allergyRouter = require('./routes/allergy');
 
-const options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Health Hero API',
-      version: '1.0.0',
-      description: 'DECO7381 Group Project by Team Running Alpaca',
-    },
-    server: [
-      {
-        url: 'http://localhost:3000',
-      },
-    ],
-  },
-  apis: ['./routes/*.js'],
-};
+// const options = {
+//   definition: {
+//     openapi: '3.0.0',
+//     info: {
+//       title: 'Health Hero API',
+//       version: '1.0.0',
+//       description: 'DECO7381 Group Project by Team Running Alpaca',
+//     },
+//     server: [
+//       {
+//         url: 'http://localhost:3000',
+//       },
+//     ],
+//   },
+//   apis: ['./routes/*.js'],
+// };
 
-const specs = swaggerJsDoc(options);
+// const specs = swaggerJsDoc(options);
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
+// app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use(express.json());
 
@@ -54,6 +55,14 @@ app.use(userRouter);
 app.use(preferenceRouter);
 app.use(allergyRouter);
 
-app.listen(port, () => console.log(`Listening on ${port}`));
+connectToDB()
+  .then(() => {
+    console.log('DB connected!');
+    app.listen(port, () => console.log(`Listening on ${port}`));
+  })
+  .catch((error) => {
+    console.log('DB connection failed');
+    console.log(error.message);
+  });
 
 module.exports = app;
