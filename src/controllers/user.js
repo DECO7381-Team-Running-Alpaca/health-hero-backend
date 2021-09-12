@@ -89,49 +89,11 @@ const logOut = async (req, res) => {
   }
 };
 
-// Log out all
-const logOutAll = async (req, res) => {
-  // This is also unnecessary for front end,
-  // But find a way to empty the array, if too much expire token exists.
-  try {
-    req.user.tokens = [];
-    await req.user.save();
-    res.send({
-      message: 'All tokens logged out.',
-      user: req.user,
-    });
-  } catch (error) {
-    res.status(500).send();
-  }
-};
-
-// Get all users (Dev.)
-const getAllUser = async (req, res) => {
-  const users = await User.find({});
-  res.send({
-    message: '留个后门',
-    users,
-  });
-};
-
 // Get current users
 const getCurrentUser = async (req, res) => {
   res.send(req.user);
 };
 
-// Update current user by username
-const updateUserByUsername = async (req, res) => {
-  const updates = Object.keys(req.body);
-  const allowedUpdates = ['user_name', 'password', 'email', 'height', 'weight'];
-  const isValidOperation = updates.every((update) =>
-    allowedUpdates.includes(update)
-  );
-  if (!isValidOperation) {
-    return res.status(400).send({
-      error: 'Invalid update!',
-    });
-  }
-};
 
 // Update current user
 const updateCurrentUser = async (req, res) => {
@@ -158,30 +120,6 @@ const updateCurrentUser = async (req, res) => {
   } catch (e) {
     res.status(500).send({
       message: 'Unexpected Error.',
-    });
-  }
-};
-
-// Delete a user by username
-const deleteUserByUsername = async (req, res) => {
-  try {
-    const user = await User.findOneAndDelete({
-      user_name: req.params.user_name,
-    });
-
-    if (!user) {
-      return res.status(400).send({
-        message: 'User not found.',
-      });
-    }
-
-    res.send({
-      message: 'User deleted.',
-      user,
-    });
-  } catch (error) {
-    res.status(400).send({
-      message: 'Delete failed.',
     });
   }
 };
@@ -291,9 +229,7 @@ const addAllergy = async (req, res) => {
     }
 
     const allAllergies = req.user.allergies;
-    // eslint-disable-next-line consistent-return
     allAllergies.forEach((aller) => {
-      // eslint-disable-next-line no-underscore-dangle
       if (aller.toString() === targetAllergy._id.toString()) {
         return res.status(400).send({
           message: 'Allergy duplicated.',
@@ -404,16 +340,45 @@ const getCurrentUserAllergies = async (req, res) => {
 
 // });
 
+// Generate weekly meal plan
+
+const generateMealPlan = async (req, res) => {
+  const mealPlan = {
+    monBreakfast: '1',
+    monLunch: '2',
+    monDinner: '3',
+    tueBreakfase: '4',
+    tueLunch: '5',
+    tueDinner: '6',
+    wedBreakfase: '7',
+    wedLunch: '8',
+    wedDinner: '9',
+    thuBreakfase: '10',
+    thuLunch: '11',
+    thuDinner: '12',
+    friBreakfase: '13',
+    friLunch: '14',
+    friDinner: '15',
+    satBreakfase: '16',
+    satLunch: '17',
+    satDinner: '18',
+    sunBreakfase: '19',
+    sunLunch: '20',
+    sunDinner: '21',
+  };
+
+  req.user.currentPlan = mealPlan;
+  res.send({
+    user: req.user,
+  });
+};
+
 module.exports = {
   signUp,
   logIn,
   logOut,
-  logOutAll,
-  getAllUser,
   getCurrentUser,
-  updateUserByUsername,
   updateCurrentUser,
-  deleteUserByUsername,
   deleteCurrentUser,
   addPreference,
   removePreference,
@@ -421,4 +386,5 @@ module.exports = {
   addAllergy,
   removeAllergy,
   getCurrentUserAllergies,
+  generateMealPlan,
 };

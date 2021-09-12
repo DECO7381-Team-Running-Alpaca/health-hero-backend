@@ -50,7 +50,9 @@ const userSchema = new mongoose.Schema({
       ref: 'Allergy',
     },
   ],
-  // current_plan: [MealList],
+  current_plan: {
+    type: Object,
+  },
   tokens: [
     {
       token: {
