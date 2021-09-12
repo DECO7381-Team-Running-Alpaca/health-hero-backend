@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 // const MealList = require('./mealList');
 
 const userSchema = new mongoose.Schema({
+  // TODO: user name and password validation
+  // TODO: password encryption
   user_name: {
     type: String,
     required: true,
