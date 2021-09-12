@@ -4,12 +4,8 @@ const {
   signUp,
   logIn,
   logOut,
-  logOutAll,
-  getAllUser,
   getCurrentUser,
-  updateUserByUsername,
   updateCurrentUser,
-  deleteUserByUsername,
   deleteCurrentUser,
   addPreference,
   removePreference,
@@ -17,6 +13,7 @@ const {
   addAllergy,
   removeAllergy,
   getCurrentUserAllergies,
+  generateMealPlan,
 } = require('../controllers/user');
 
 const validator = require('../middlewares/validator');
@@ -53,23 +50,11 @@ router.post('/users/login', logIn);
 // Logout
 router.post('/users/logout', validator, logOut);
 
-// Logout All
-router.post('/users/logout_all', validator, logOutAll);
-
-// Get all users
-router.get('/users/all', getAllUser);
-
 // Get current user
 router.get('/users/me', validator, getCurrentUser);
 
-// Update current user by username
-router.patch('/users/dev/:user_name', updateUserByUsername);
-
 // Update current user
 router.patch('/users/me', validator, updateCurrentUser);
-
-// Delete a user by username
-router.delete('/users/dev/:user_name', deleteUserByUsername);
 
 // Delete current user
 router.delete('/users/me', validator, deleteCurrentUser);
@@ -91,5 +76,8 @@ router.delete('/users/allergies/:a_name', validator, removeAllergy);
 
 // Get all allergies from a user
 router.get('/users/allergies/', validator, getCurrentUserAllergies);
+
+// Generate meal plan
+router.post('/users/meal', validator, generateMealPlan)
 
 module.exports = router;
