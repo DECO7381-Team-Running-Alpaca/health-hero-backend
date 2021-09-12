@@ -6,11 +6,16 @@ const Allergy = require('../models/allergy');
 
 // Sign Up
 const signUp = async (req, res) => {
+  // A nice way to destructure object
+  // const {user_name, password} = req.body;
   const user = new User(req.body);
 
+  // Get rid of try catch block and use error handling middleware
   try {
     const existUser = await User.findOne({ user_name: user.user_name });
     if (existUser) {
+      // TODO: send json instead of String
+      // TODO: have a consistent format form
       return res.status(400).send('Username unavailable. User has existed.');
     }
 
@@ -19,10 +24,13 @@ const signUp = async (req, res) => {
 
     res.status(201).send({
       message: 'User Created!',
+      // not all info in user is needed
       user,
       token,
     });
   } catch (error) {
+    console.log(error);
+    // TODO: message info covers too much, and change fail code
     res.status(400).send({
       message: 'Please make sure that body is well organized.',
     });
@@ -34,6 +42,7 @@ const logIn = async (req, res) => {
   try {
     const user = await User.findOne({ user_name: req.body.user_name });
 
+    // TODO: user not exists message.
     if (!user) {
       throw Error();
     }
