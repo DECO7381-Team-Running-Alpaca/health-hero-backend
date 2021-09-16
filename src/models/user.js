@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate(value) {
-      if (value.length < 6 || value.length > 18) {
+      if (value.length < 6) {
         throw new Error('Password length invalid.');
       }
       let upperIncluded = false;
