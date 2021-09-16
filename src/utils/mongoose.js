@@ -7,9 +7,6 @@ const mongoose = require('mongoose');
 //   useFindAndModify: false,
 // });
 
-// Tony Local数据库文件位置，放在这方便我每次链接数据库...
-// D:/MongoDBDir/MongoDB/bin/mongod.exe --dbpath=D:\MongoDBDir\MongoDB-data
-
 // mongoose.connect(process.env.DB_URL, {
 //   useNewUrlParser: true,
 //   useCreateIndex: true,
