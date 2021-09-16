@@ -1,4 +1,6 @@
 const express = require('express');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
 
 const {
   signUp,
@@ -19,6 +21,18 @@ const {
 const validator = require('../middlewares/validator');
 
 const router = new express.Router();
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: 'Health Hero Back-end Database',
+      version: '1.0.0',
+    },
+  },
+  apis: ['../index.js'],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 /**
  * @swagger

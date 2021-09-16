@@ -4,7 +4,7 @@ const User = require('../models/user');
 const validator = async (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
-    const decoded = jwt.verify(token, 'healthhero');
+    const decoded = jwt.verify(token, process.env.JWT_KEY);
     const user = await User.findOne({
       // eslint-disable-next-line no-underscore-dangle
       _id: decoded._id,
