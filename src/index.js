@@ -5,8 +5,6 @@ const express = require('express');
 const { connectToDB } = require('./utils/mongoose');
 
 const userRouter = require('./routes/user');
-const preferenceRouter = require('./routes/preference');
-const allergyRouter = require('./routes/allergy');
 
 // const options = {
 //   definition: {
@@ -52,8 +50,6 @@ app.get('/', (req, res) => {
 });
 
 app.use(userRouter);
-app.use(preferenceRouter);
-app.use(allergyRouter);
 
 connectToDB()
   .then(() => {

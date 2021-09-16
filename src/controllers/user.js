@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable consistent-return */
 const User = require('../models/user');
@@ -7,7 +8,7 @@ const Allergy = require('../models/allergy');
 // Sign Up
 const signUp = async (req, res) => {
   // A nice way to destructure object
-  // const {user_name, password} = req.body;
+
   const user = new User(req.body);
 
   // Get rid of try catch block and use error handling middleware
@@ -44,16 +45,11 @@ const logIn = async (req, res) => {
 
     // TODO: user not exists message.
     if (!user) {
-      throw Error();
+      throw Error('No user found!');
     }
 
-    let isMatch = false;
-    if (user.password === req.body.password) {
-      isMatch = true;
-    }
-
-    if (!isMatch) {
-      throw Error();
+    if (!user.checkUser(req.body.password)) {
+      throw Error('Username/Password not correct!');
     }
 
     const token = await user.generateAuthToken();
@@ -94,7 +90,6 @@ const getCurrentUser = async (req, res) => {
   res.send(req.user);
 };
 
-
 // Update current user
 const updateCurrentUser = async (req, res) => {
   const updates = Object.keys(req.body);
@@ -109,7 +104,6 @@ const updateCurrentUser = async (req, res) => {
   }
 
   try {
-    // eslint-disable-next-line no-return-assign
     updates.forEach((update) => (req.user[update] = req.body[update]));
     await req.user.save();
 
@@ -149,7 +143,6 @@ const addPreference = async (req, res) => {
 
     const allPreferences = req.user.preferences;
     allPreferences.forEach((pref) => {
-      // eslint-disable-next-line no-underscore-dangle
       if (pref.toString() === preference._id.toString()) {
         return res.status(400).send({
           message: 'Preference duplicated.',

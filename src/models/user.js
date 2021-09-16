@@ -1,19 +1,46 @@
+/* eslint-disable func-names */
+/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
-// const MealList = require('./mealList');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-  // TODO: user name and password validation
-  // TODO: password encryption
   user_name: {
     type: String,
     required: true,
     unique: true,
+    validate(value) {
+      if (value.length < 6 || value.length > 18) {
+        throw new Error('Username length invalid.');
+      }
+    },
   },
   password: {
     type: String,
     required: true,
+    validate(value) {
+      if (value.length < 6 || value.length > 18) {
+        throw new Error('Password length invalid.');
+      }
+      let upperIncluded = false;
+      let lowerIncluded = false;
+      let digitIncluded = false;
+      value.split('').forEach((char) => {
+        if (validator.isNumeric(char)) {
+          digitIncluded = true;
+        } else if (validator.isLowercase(char)) {
+          lowerIncluded = true;
+        } else if (validator.isUppercase(char)) {
+          upperIncluded = true;
+        }
+      });
+      if (!(upperIncluded && lowerIncluded && digitIncluded)) {
+        throw new Error(
+          'Password must include uppercase, lowercase and number'
+        );
+      }
+    },
   },
   email: {
     type: String,
@@ -63,16 +90,29 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-// eslint-disable-next-line func-names
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
-  // eslint-disable-next-line no-underscore-dangle
-  const token = jwt.sign({ _id: user._id.toString() }, 'healthhero');
+  const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_KEY);
 
   user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;
 };
+
+userSchema.methods.checkUser = async function (password) {
+  const user = this;
+  const match = await bcrypt.compare(password, user.password);
+  if (match) {
+    return true;
+  }
+  return false;
+};
+
+userSchema.pre('save', async function (next) {
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
 
 const User = mongoose.model('User', userSchema);
 
