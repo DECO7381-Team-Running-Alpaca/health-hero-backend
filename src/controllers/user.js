@@ -43,7 +43,6 @@ const logIn = async (req, res) => {
   try {
     const user = await User.findOne({ user_name: req.body.user_name });
 
-    // TODO: user not exists message.
     if (!user) {
       throw Error('No user found!');
     }
