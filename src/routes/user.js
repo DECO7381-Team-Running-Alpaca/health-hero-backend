@@ -1,6 +1,6 @@
 const express = require('express');
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUI = require('swagger-ui-express');
+// const swaggerJsDoc = require('swagger-jsdoc');
+// const swaggerUI = require('swagger-ui-express');
 
 const {
   signUp,
@@ -22,17 +22,17 @@ const validator = require('../middlewares/validator');
 
 const router = new express.Router();
 
-const swaggerOptions = {
-  swaggerDefinition: {
-    info: {
-      title: 'Health Hero Back-end Database',
-      version: '1.0.0',
-    },
-  },
-  apis: ['../index.js'],
-};
+// const swaggerOptions = {
+//   swaggerDefinition: {
+//     info: {
+//       title: 'Health Hero Back-end Database',
+//       version: '1.0.0',
+//     },
+//   },
+//   apis: ['../index.js'],
+// };
 
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
+// const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 /**
  * @swagger
@@ -55,8 +55,12 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
  *        description: User name
  */
 
+const globalCathMW = (controller) => (req, res, next) => {
+  Promise.resolve(controller(req, res, next)).catch(next);
+};
+
 // Sign up
-router.post('/users', signUp);
+router.post('/users', globalCathMW(signUp));
 
 // Log in
 router.post('/users/login', logIn);
@@ -92,6 +96,6 @@ router.delete('/users/allergies/:a_name', validator, removeAllergy);
 router.get('/users/allergies/', validator, getCurrentUserAllergies);
 
 // Generate meal plan
-router.post('/users/meal', validator, generateMealPlan)
+router.post('/users/meal', validator, generateMealPlan);
 
 module.exports = router;

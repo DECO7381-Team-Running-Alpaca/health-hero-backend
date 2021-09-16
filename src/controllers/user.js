@@ -4,38 +4,23 @@
 const User = require('../models/user');
 const Preference = require('../models/preference');
 const Allergy = require('../models/allergy');
+const response = require('../utils/resFormatter');
 
 // Sign Up
 const signUp = async (req, res) => {
-  // A nice way to destructure object
-
   const user = new User(req.body);
 
-  // Get rid of try catch block and use error handling middleware
-  try {
-    const existUser = await User.findOne({ user_name: user.user_name });
-    if (existUser) {
-      // TODO: send json instead of String
-      // TODO: have a consistent format form
-      return res.status(400).send('Username unavailable. User has existed.');
-    }
-
-    const token = await user.generateAuthToken();
-    user.save();
-
-    res.status(201).send({
-      message: 'User Created!',
-      // not all info in user is needed
-      user,
-      token,
-    });
-  } catch (error) {
-    console.log(error);
-    // TODO: message info covers too much, and change fail code
-    res.status(400).send({
-      message: 'Please make sure that body is well organized.',
-    });
+  const existUser = await User.findOne({ user_name: user.user_name });
+  if (existUser) {
+    return response(res, 400, 'User already exists');
   }
+
+  const token = await user.generateAuthToken();
+  user.save();
+  return response(res, 201, `${user.user_name} has been created`, {
+    id: user._id,
+    token,
+  });
 };
 
 // Log in

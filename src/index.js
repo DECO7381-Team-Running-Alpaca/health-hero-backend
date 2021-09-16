@@ -5,6 +5,7 @@ const express = require('express');
 const { connectToDB } = require('./utils/mongoose');
 
 const userRouter = require('./routes/user');
+const errorHandler = require('./middlewares/errorHandler');
 
 // const options = {
 //   definition: {
@@ -31,7 +32,6 @@ const port = process.env.PORT || 3000;
 // app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use(express.json());
-
 /**
  * @swagger
  * /:
@@ -50,6 +50,8 @@ app.get('/', (req, res) => {
 });
 
 app.use(userRouter);
+
+app.use(errorHandler);
 
 connectToDB()
   .then(() => {
