@@ -16,6 +16,7 @@ const {
   removeAllergy,
   getCurrentUserAllergies,
   generateMealPlan,
+  addmultiplePreference,
 } = require('../controllers/user');
 
 const validator = require('../middlewares/validator');
@@ -74,7 +75,7 @@ router.patch('/users/me', validator, updateCurrentUser);
 router.delete('/users/me', validator, deleteCurrentUser);
 
 // Add a preference to current user by p_name
-router.post('/users/preferences/:p_name', validator, addPreference);
+router.post('/users/preferencesp_name', validator, addPreference);
 
 // Remove a preference from a user
 router.delete('/users/preferences/:p_name', validator, removePreference);
@@ -92,6 +93,10 @@ router.delete('/users/allergies/:a_name', validator, removeAllergy);
 router.get('/users/allergies/', validator, getCurrentUserAllergies);
 
 // Generate meal plan
-router.post('/users/meal', validator, generateMealPlan)
+router.post('/users/meal', validator, generateMealPlan);
+
+// Add multiple preferences
+
+router.post('/users/preferences', validator, addmultiplePreference);
 
 module.exports = router;
