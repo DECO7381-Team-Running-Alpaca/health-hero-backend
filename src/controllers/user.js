@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable consistent-return */
@@ -119,7 +122,9 @@ const deleteCurrentUser = async (req, res) => {
 // Add a preference to current user
 const addPreference = async (req, res) => {
   try {
-    const preference = await Preference.findOne({ p_name: req.params.p_name });
+    const preference = await Preference.findOne({ p_name: req.body.p_name });
+    console.log(req.body.p_name);
+    console.log(preference);
     if (!preference) {
       return res.status(400).send({
         message: 'Preference not found.',
@@ -283,40 +288,38 @@ const getCurrentUserAllergies = async (req, res) => {
 //   try{
 //     const targetPreferences = await req.body
 
-//     const userPreferences = await req.user.preferences
+const addmultiplePreference = async (req, res) => {
+  try {
+    const { userid, preference } = req.body;
+    preference.forEach(async (pref) => {
+      const nameofPreference = await Preference.findOne({ p_name: pref });
+      // check preference with Preference
+      if (!nameofPreference) {
+        res.status(400).json('error');
+        return;
+      }
+      const user = await User.findById(userid);
+      const userPreference = user.preferences;
+      // check the preference with user's
+      await userPreference.forEach((uPref) => {
+        if (uPref.toString() === nameofPreference._id.toString()) {
+          return res.status(400).send({
+            message: 'Preference duplicated.',
+          });
+        }
+      });
 
-//     targetPreferences.forEach((preference, index) =>{
-//       //check how many loops I have run
-//       console.log(preference)
-//       //check detail for every loop I got
-//       console.log('This is ' + index + "th loop in for each")
-//       if(preference === Preference.findOne({p_name :(req.body[index])})){
-//         console.log('Im checking preference ')
-//         userPreferences.forEach((uPreference) => {
-//           // check where I am
-//           console.log("imhere")
-//           if(uPreference.toString() !== preference._id.toString()){
-//             req.user.preferences = req.user.preferences.concat(preference)
-//             req.save()
-//             res.status(200).send({
-//               message:"add!",
-//               user:req.user
-//             })
-//           }
-//         })
-//         }
-
-//     })
-//     //  res.status('404').send({
-//     //    message: "wrong input"
-//     //  })
-//   }catch(error){
-//     res.status(400).send({
-//       message:" fail to add"
-//     })
-//   }
-
-// });
+      req.user.preferences = req.user.preferences.concat(nameofPreference);
+    });
+    await req.user.save();
+    return res.send({
+      message: 'Preferece has been added.',
+      user: req.user,
+    });
+  } catch (error) {
+    res.status(400).json('error');
+  }
+};
 
 // Generate weekly meal plan
 
@@ -365,4 +368,5 @@ module.exports = {
   removeAllergy,
   getCurrentUserAllergies,
   generateMealPlan,
+  addmultiplePreference,
 };
