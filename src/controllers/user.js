@@ -73,87 +73,6 @@ const logOut = async (req, res) => {
   }
 };
 
-// Get current users
-const getCurrentUser = async (req, res) => {
-  res.send(req.user);
-};
-
-// Update current user
-const updateCurrentUser = async (req, res) => {
-  const updates = Object.keys(req.body);
-  const allowedUpdates = ['password', 'email', 'height', 'weight'];
-  const isValidOperation = updates.every((update) =>
-    allowedUpdates.includes(update)
-  );
-  if (!isValidOperation) {
-    return res.status(400).send({
-      error: 'Invalid update!',
-    });
-  }
-
-  try {
-    updates.forEach((update) => (req.user[update] = req.body[update]));
-    await req.user.save();
-
-    res.send({
-      message: 'Update success.',
-      user: req.user,
-    });
-  } catch (e) {
-    res.status(500).send({
-      message: 'Unexpected Error.',
-    });
-  }
-};
-
-// Delete current user
-const deleteCurrentUser = async (req, res) => {
-  try {
-    await req.user.remove();
-    res.send({
-      message: 'User deleted.',
-      user: req.user,
-    });
-  } catch (e) {
-    res.status(500).send();
-  }
-};
-
-// Add a preference to current user
-const addPreference = async (req, res) => {
-  try {
-    const preference = await Preference.findOne({ p_name: req.body.p_name });
-    console.log(req.body.p_name);
-    console.log(preference);
-    if (!preference) {
-      return res.status(400).send({
-        message: 'Preference not found.',
-      });
-    }
-
-    const allPreferences = req.user.preferences;
-    allPreferences.forEach((pref) => {
-      if (pref.toString() === preference._id.toString()) {
-        return res.status(400).send({
-          message: 'Preference duplicated.',
-        });
-      }
-    });
-
-    req.user.preferences = req.user.preferences.concat(preference);
-    await req.user.save();
-
-    res.send({
-      message: 'Preferece has been added.',
-      user: req.user,
-    });
-  } catch (error) {
-    res.status(400).send({
-      message: 'Adding failed.',
-    });
-  }
-};
-
 // Remove a preference from a user
 const removePreference = async (req, res) => {
   try {
@@ -177,59 +96,6 @@ const removePreference = async (req, res) => {
   } catch (error) {
     res.status(402).send({
       message: 'fail to delete',
-    });
-  }
-};
-
-// Get all preferences from a user
-const getCurrentUserPreferences = async (req, res) => {
-  try {
-    const allPreferences = req.user.preferences;
-    if (allPreferences.lengh === 0) {
-      res.status(402).send({
-        message: 'No preference for this user',
-      });
-    }
-    res.send({
-      message: 'Preferece has been founded.',
-      allPreferences,
-    });
-  } catch (error) {
-    res.status(400).send({
-      message: 'cant find preferences.',
-    });
-  }
-};
-
-// Add an allergy to current user by a_name
-const addAllergy = async (req, res) => {
-  try {
-    const targetAllergy = await Allergy.findOne({ a_name: req.params.a_name });
-    if (!targetAllergy) {
-      return res.status(400).send({
-        message: 'allergy not found.',
-      });
-    }
-
-    const allAllergies = req.user.allergies;
-    allAllergies.forEach((aller) => {
-      if (aller.toString() === targetAllergy._id.toString()) {
-        return res.status(400).send({
-          message: 'Allergy duplicated.',
-        });
-      }
-    });
-
-    req.user.allergies = req.user.allergies.concat(targetAllergy);
-    await req.user.save();
-
-    res.send({
-      message: 'Allergies has been added.',
-      user: req.user,
-    });
-  } catch (error) {
-    res.status(400).send({
-      message: 'Adding failed.',
     });
   }
 };
@@ -260,34 +126,7 @@ const removeAllergy = async (req, res) => {
   }
 };
 
-// Get all allergies from a user
-const getCurrentUserAllergies = async (req, res) => {
-  try {
-    const allAllergies = req.user.allergies;
-    if (allAllergies.lengh === 0) {
-      res.status(402).send({
-        message: 'No allergies for this user',
-      });
-    }
-    res.send({
-      message: 'Allergies has been founded.',
-      allAllergies,
-    });
-  } catch (error) {
-    res.status(400).send({
-      message: 'cant find allergies.',
-    });
-  }
-};
-
-// add mutipule preferences by body
-// 1. 从req.body 中读取[] 2.对其进行遍历， 判断其内每个元素是否存在于 Preferece的库中
-//  3. 针对在库中的， 再次进行判断是否于user preference重复
-// *4.将不重复的加入， 重复的告知用户具体那个preference重复
-// router.post('/users/preferences/', validator, async (req, res) => {
-//   try{
-//     const targetPreferences = await req.body
-
+// add multipule preferences by body
 const addmultiplePreference = async (req, res) => {
   try {
     const { userid, preference } = req.body;
@@ -320,6 +159,8 @@ const addmultiplePreference = async (req, res) => {
     res.status(400).json('error');
   }
 };
+
+// add multipule allergies by body
 
 // Generate weekly meal plan
 
@@ -358,15 +199,8 @@ module.exports = {
   signUp,
   logIn,
   logOut,
-  getCurrentUser,
-  updateCurrentUser,
-  deleteCurrentUser,
-  addPreference,
   removePreference,
-  getCurrentUserPreferences,
-  addAllergy,
   removeAllergy,
-  getCurrentUserAllergies,
   generateMealPlan,
   addmultiplePreference,
 };

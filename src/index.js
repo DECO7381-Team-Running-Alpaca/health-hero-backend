@@ -5,6 +5,8 @@ const express = require('express');
 const { connectToDB } = require('./utils/mongoose');
 
 const userRouter = require('./routes/user');
+// eslint-disable-next-line no-unused-vars
+const devRouter = require('./routes/dev');
 const errorHandler = require('./middlewares/errorHandler');
 
 // const options = {
@@ -50,6 +52,8 @@ app.get('/', (req, res) => {
 });
 
 app.use(userRouter);
+
+app.use(devRouter);
 
 app.use(errorHandler);
 

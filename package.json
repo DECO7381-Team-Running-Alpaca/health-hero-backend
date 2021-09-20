@@ -34,5 +34,17 @@
     "nodemon": "^2.0.12",
     "prettier": "^2.3.2",
     "supertest": "^6.1.6"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DECO7381-Team-Running-Alpaca/health-hero-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DECO7381-Team-Running-Alpaca/health-hero-backend/issues"
+  },
+  "homepage": "https://github.com/DECO7381-Team-Running-Alpaca/health-hero-backend#readme",
+  "keywords": []
 }
