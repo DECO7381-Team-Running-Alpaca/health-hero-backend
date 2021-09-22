@@ -73,6 +73,87 @@ const logOut = async (req, res) => {
   }
 };
 
+// Get current users
+const getCurrentUser = async (req, res) => {
+  res.send(req.user);
+};
+
+// Update current user
+const updateCurrentUser = async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ['password', 'email', 'height', 'weight'];
+  const isValidOperation = updates.every((update) =>
+    allowedUpdates.includes(update)
+  );
+  if (!isValidOperation) {
+    return res.status(400).send({
+      error: 'Invalid update!',
+    });
+  }
+
+  try {
+    updates.forEach((update) => (req.user[update] = req.body[update]));
+    await req.user.save();
+
+    res.send({
+      message: 'Update success.',
+      user: req.user,
+    });
+  } catch (e) {
+    res.status(500).send({
+      message: 'Unexpected Error.',
+    });
+  }
+};
+
+// Delete current user
+const deleteCurrentUser = async (req, res) => {
+  try {
+    await req.user.remove();
+    res.send({
+      message: 'User deleted.',
+      user: req.user,
+    });
+  } catch (e) {
+    res.status(500).send();
+  }
+};
+
+// Add a preference to current user
+const addPreference = async (req, res) => {
+  try {
+    const preference = await Preference.findOne({ p_name: req.body.p_name });
+    console.log(req.body.p_name);
+    console.log(preference);
+    if (!preference) {
+      return res.status(400).send({
+        message: 'Preference not found.',
+      });
+    }
+
+    const allPreferences = req.user.preferences;
+    allPreferences.forEach((pref) => {
+      if (pref.toString() === preference._id.toString()) {
+        return res.status(400).send({
+          message: 'Preference duplicated.',
+        });
+      }
+    });
+
+    req.user.preferences = req.user.preferences.concat(preference);
+    await req.user.save();
+
+    res.send({
+      message: 'Preferece has been added.',
+      user: req.user,
+    });
+  } catch (error) {
+    res.status(400).send({
+      message: 'Adding failed.',
+    });
+  }
+};
+
 // Remove a preference from a user
 const removePreference = async (req, res) => {
   try {

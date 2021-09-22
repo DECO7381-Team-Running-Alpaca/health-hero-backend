@@ -3,6 +3,9 @@ const express = require('express');
 // const swaggerUI = require('swagger-ui-express');
 
 const {
+  getCurrentUser,
+  updateCurrentUser,
+  deleteCurrentUser,
   signUp,
   logIn,
   logOut,
@@ -61,6 +64,15 @@ router.post('/users/login', logIn);
 
 // Logout
 router.post('/users/logout', validator, logOut);
+
+// Get current user
+router.get('/users/me', validator, getCurrentUser);
+
+// Update current user
+router.patch('/users/me', validator, updateCurrentUser);
+
+// Delete current user
+router.delete('/users/me', validator, deleteCurrentUser);
 
 // Remove a preference from a user
 router.delete('/users/preferences/:p_name', validator, removePreference);
