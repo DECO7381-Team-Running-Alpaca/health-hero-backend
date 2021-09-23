@@ -161,6 +161,38 @@ const addmultiplePreference = async (req, res) => {
 };
 
 // add multipule allergies by body
+const addmultipleAllergies = async (req, res) => {
+  try {
+    const { userid, allergy } = req.body;
+    allergy.forEach(async (alle) => {
+      const nameofAllergy = await Allergy.findOne({ a_name: alle });
+      // check preference with Preference
+      if (!nameofAllergy) {
+        res.status(400).json('error');
+        return;
+      }
+      const user = await User.findById(userid);
+      const userAllergy = user.allergies;
+      // check the preference with user's
+      await userAllergy.forEach((uAllergy) => {
+        if (uAllergy.toString() === nameofAllergy._id.toString()) {
+          return res.status(400).send({
+            message: 'Allergy duplicated.',
+          });
+        }
+      });
+
+      req.user.allergies = req.user.allergies.concat(nameofAllergy);
+    });
+    await req.user.save();
+    return res.send({
+      message: 'Allergy has been added.',
+      user: req.user,
+    });
+  } catch (error) {
+    res.status(400).json('error');
+  }
+};
 
 // Generate weekly meal plan
 
@@ -203,4 +235,5 @@ module.exports = {
   removeAllergy,
   generateMealPlan,
   addmultiplePreference,
+  addmultipleAllergies,
 };
