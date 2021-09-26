@@ -28,54 +28,35 @@ const signUp = async (req, res) => {
 
 // Log in
 const logIn = async (req, res) => {
-  try {
-    const user = await User.findOne({ user_name: req.body.user_name });
+  const user = await User.findOne({ user_name: req.body.user_name });
 
-    if (!user) {
-      throw Error('No user found!');
-    }
-
-    if (!user.checkUser(req.body.password)) {
-      throw Error('Username/Password not correct!');
-    }
-
-    const token = await user.generateAuthToken();
-
-    res.send({
-      message: 'You have been logged in.',
-      user,
-      token,
-    });
-  } catch (error) {
-    res.status(400).send({
-      error,
-      message: 'You Shall Not Pass!',
-    });
+  if (!user) {
+    return response(res, 400, 'User not found');
   }
+
+  if (!user.checkUser(req.body.password)) {
+    return response(res, 401, 'Username/Password incorrect.');
+  }
+
+  const token = await user.generateAuthToken();
+  return response(res, 200, `You have been logged in. Hello ${user.user_name}`);
 };
 
 // Log out
 const logOut = async (req, res) => {
-  try {
-    req.user.tokens = req.user.tokens.filter((token) => {
-      return token.token !== req.token;
-    });
+  req.user.tokens = req.user.tokens.filter((token) => {
+    return token.token !== req.token;
+  });
 
-    await req.user.save();
-    res.send({
-      message: 'Current token logged out.',
-      user: req.user,
-    });
-  } catch (error) {
-    res.status(500).send({
-      message: '???',
-    });
-  }
+  await req.user.save();
+  return response(res, 200, `You have been logged out.`);
 };
 
 // Get current users
 const getCurrentUser = async (req, res) => {
-  res.send(req.user);
+  return response(res, 200, `Current loggin in user.`, {
+    user: req.user,
+  });
 };
 
 // Update current user
@@ -86,159 +67,107 @@ const updateCurrentUser = async (req, res) => {
     allowedUpdates.includes(update)
   );
   if (!isValidOperation) {
-    return res.status(400).send({
-      error: 'Invalid update!',
-    });
+    return response(res, 400, `Invalid update`);
   }
 
-  try {
-    updates.forEach((update) => (req.user[update] = req.body[update]));
-    await req.user.save();
-
-    res.send({
-      message: 'Update success.',
-      user: req.user,
-    });
-  } catch (e) {
-    res.status(500).send({
-      message: 'Unexpected Error.',
-    });
-  }
+  updates.forEach((update) => (req.user[update] = req.body[update]));
+  await req.user.save();
+  return response(res, 200, `Update success.`, {
+    user: req.user,
+  });
 };
 
 // Delete current user
 const deleteCurrentUser = async (req, res) => {
-  try {
-    await req.user.remove();
-    res.send({
-      message: 'User deleted.',
-      user: req.user,
-    });
-  } catch (e) {
-    res.status(500).send();
-  }
+  await req.user.remove();
+  return response(res, 200, `Current user deleted`, {
+    user: req.user,
+  });
 };
 
 // Add a preference to current user
 const addPreference = async (req, res) => {
-  try {
-    const preference = await Preference.findOne({ p_name: req.body.p_name });
-    console.log(req.body.p_name);
-    console.log(preference);
-    if (!preference) {
-      return res.status(400).send({
-        message: 'Preference not found.',
-      });
-    }
-
-    const allPreferences = req.user.preferences;
-    allPreferences.forEach((pref) => {
-      if (pref.toString() === preference._id.toString()) {
-        return res.status(400).send({
-          message: 'Preference duplicated.',
-        });
-      }
-    });
-
-    req.user.preferences = req.user.preferences.concat(preference);
-    await req.user.save();
-
-    res.send({
-      message: 'Preferece has been added.',
-      user: req.user,
-    });
-  } catch (error) {
-    res.status(400).send({
-      message: 'Adding failed.',
-    });
+  const preference = await Preference.findOne({ p_name: req.body.p_name });
+  if (!preference) {
+    return response(res, 400, `Preference not found`);
   }
+
+  const allPreferences = req.user.preferences;
+  allPreferences.forEach((pref) => {
+    if (pref.toString() === preference._id.toString()) {
+      return response(res, 400, `Preference duplicated.`);
+    }
+  });
+
+  req.user.preferences = req.user.preferences.concat(preference);
+  await req.user.save();
+
+  return response(res, 200, `Preferece has been added.`, {
+    preferences: req.user.preferences,
+  });
 };
 
 // Remove a preference from a user
 const removePreference = async (req, res) => {
-  try {
-    const targerPreference = await Preference.findOne({
-      p_name: req.params.p_name,
-    });
-    const userPreference = req.user.preferences;
-    userPreference.forEach((preference) => {
-      if (preference.toString() === targerPreference._id.toString()) {
-        req.user.preferences = req.user.preferences.remove(targerPreference);
+  const targerPreference = await Preference.findOne({
+    p_name: req.params.p_name,
+  });
+  const userPreference = req.user.preferences;
 
-        res.send({
-          message: 'delete successfully!',
-          user: req.user,
-        });
-      }
-    });
-    res.status(402).send({
-      message: 'There is not such a preference',
-    });
-  } catch (error) {
-    res.status(402).send({
-      message: 'fail to delete',
-    });
-  }
+  userPreference.forEach((preference) => {
+    if (preference.toString() === targerPreference._id.toString()) {
+      req.user.preferences = req.user.preferences.remove(targerPreference);
+      return response(res, 200, `Preference deleted.`, {
+        preferences: req.user.preferences,
+      });
+    }
+  });
+  return response(res, 400, `No such preference found.`);
 };
 
 // Remove an allergy from a user
 const removeAllergy = async (req, res) => {
-  try {
-    const targerAllergy = await Allergy.findOne({ a_name: req.params.a_name }); // 1+2
-    const userAllergy = req.user.allergies;
+  const targerAllergy = await Allergy.findOne({ a_name: req.params.a_name }); // 1+2
+  const userAllergy = req.user.allergies;
 
-    userAllergy.forEach((allergy) => {
-      if (allergy.toString() === targerAllergy._id.toString()) {
-        req.user.allergies = req.user.allergies.remove(targerAllergy);
-
-        res.send({
-          message: 'delete successfully!',
-          user: req.user,
-        });
-      }
-    });
-    res.status(402).send({
-      message: 'There is not such an allergy',
-    });
-  } catch (error) {
-    res.status(402).send({
-      message: 'fail to delete',
-    });
-  }
+  userAllergy.forEach((allergy) => {
+    if (allergy.toString() === targerAllergy._id.toString()) {
+      req.user.allergies = req.user.allergies.remove(targerAllergy);
+      return response(res, 200, `Allergy deleted.`, {
+        allergies: req.user.allergies,
+      });
+    }
+  });
+  return response(res, 400, `No such allergy found.`);
 };
 
 // add multipule preferences by body
 const addmultiplePreference = async (req, res) => {
-  try {
-    const { userid, preference } = req.body;
-    preference.forEach(async (pref) => {
-      const nameofPreference = await Preference.findOne({ p_name: pref });
-      // check preference with Preference
-      if (!nameofPreference) {
-        res.status(400).json('error');
-        return;
+  const { userid, preference } = req.body;
+  preference.forEach(async (pref) => {
+    const nameofPreference = await Preference.findOne({ p_name: pref });
+    // check preference with Preference
+    if (!nameofPreference) {
+      return response(res, 400, `No such preference found.`);
+    }
+    const user = await User.findById(userid);
+    if (!user) {
+      return response(res, 400, `User not found.`);
+    }
+    const userPreference = user.preferences;
+    // check the preference with user's
+    await userPreference.forEach((uPref) => {
+      if (uPref.toString() === nameofPreference._id.toString()) {
+        return response(res, 400, `Preference duplicated`);
       }
-      const user = await User.findById(userid);
-      const userPreference = user.preferences;
-      // check the preference with user's
-      await userPreference.forEach((uPref) => {
-        if (uPref.toString() === nameofPreference._id.toString()) {
-          return res.status(400).send({
-            message: 'Preference duplicated.',
-          });
-        }
-      });
+    });
 
-      req.user.preferences = req.user.preferences.concat(nameofPreference);
-    });
-    await req.user.save();
-    return res.send({
-      message: 'Preferece has been added.',
-      user: req.user,
-    });
-  } catch (error) {
-    res.status(400).json('error');
-  }
+    req.user.preferences = req.user.preferences.concat(nameofPreference);
+  });
+  await req.user.save();
+  return response(res, 200, `Preferences added.`, {
+    user: req.user,
+  });
 };
 
 // add multipule allergies by body
@@ -309,6 +238,7 @@ module.exports = {
   getCurrentUser,
   updateCurrentUser,
   deleteCurrentUser,
+  addPreference,
   removePreference,
   removeAllergy,
   generateMealPlan,
