@@ -243,36 +243,30 @@ const addmultiplePreference = async (req, res) => {
 
 // add multipule allergies by body
 const addmultipleAllergies = async (req, res) => {
-  try {
-    const { userid, allergy } = req.body;
-    allergy.forEach(async (alle) => {
-      const nameofAllergy = await Allergy.findOne({ a_name: alle });
-      // check preference with Preference
-      if (!nameofAllergy) {
-        res.status(400).json('error');
-        return;
+  const { userid, allergies } = req.body;
+  const { user } = req;
+  const token = await user.generateAuthToken();
+  allergies.forEach(async (allergy) => {
+    const nameofAllergy = await Allergy.findOne({ a_name: allergy });
+    // check preference with Preference
+    if (!nameofAllergy) {
+      return response(res, 400, 'Allergy does not exist');
+    }
+    const userAllergies = user.allergies;
+    // check the preference with user's
+    await userAllergies.forEach((uAllergy) => {
+      if (uAllergy.toString() === nameofAllergy._id.toString()) {
+        return response(res, 400, 'Allergy duplicated.');
       }
-      const user = await User.findById(userid);
-      const userAllergy = user.allergies;
-      // check the preference with user's
-      await userAllergy.forEach((uAllergy) => {
-        if (uAllergy.toString() === nameofAllergy._id.toString()) {
-          return res.status(400).send({
-            message: 'Allergy duplicated.',
-          });
-        }
-      });
+    });
 
-      req.user.allergies = req.user.allergies.concat(nameofAllergy);
-    });
-    await req.user.save();
-    return res.send({
-      message: 'Allergy has been added.',
-      user: req.user,
-    });
-  } catch (error) {
-    res.status(400).json('error');
-  }
+    req.user.allergies = req.user.allergies.concat(nameofAllergy);
+  });
+  await req.user.save();
+  return response(res, 201, 'Allergy has been added.', {
+    id: userid,
+    token,
+  });
 };
 
 // Generate weekly meal plan
