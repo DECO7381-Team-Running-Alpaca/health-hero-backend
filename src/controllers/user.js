@@ -39,7 +39,10 @@ const logIn = async (req, res) => {
   }
 
   const token = await user.generateAuthToken();
-  return response(res, 200, `You have been logged in. Hello ${user.user_name}`);
+  return response(res, 200, `${user.user_name} has been logged in.`, {
+    id: user._id,
+    token,
+  });
 };
 
 // Log out
@@ -49,14 +52,12 @@ const logOut = async (req, res) => {
   });
 
   await req.user.save();
-  return response(res, 200, `You have been logged out.`);
+  return response(res, 200, `User have been logged out.`);
 };
 
 // Get current users
 const getCurrentUser = async (req, res) => {
-  return response(res, 200, `Current loggin in user.`, {
-    user: req.user,
-  });
+  return response(res, 200, 'Fetch user successfully.', req.user);
 };
 
 // Update current user
