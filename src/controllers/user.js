@@ -175,7 +175,6 @@ const addmultiplePreference = async (req, res) => {
 const addmultipleAllergies = async (req, res) => {
   const { userid, allergies } = req.body;
   const { user } = req;
-  const token = await user.generateAuthToken();
   allergies.forEach(async (allergy) => {
     const nameofAllergy = await Allergy.findOne({ a_name: allergy });
     // check preference with Preference
@@ -195,7 +194,6 @@ const addmultipleAllergies = async (req, res) => {
   await req.user.save();
   return response(res, 201, 'Allergy has been added.', {
     id: userid,
-    token,
   });
 };
 
