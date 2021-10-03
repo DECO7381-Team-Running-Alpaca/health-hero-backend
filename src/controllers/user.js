@@ -197,6 +197,31 @@ const addmultipleAllergies = async (req, res) => {
   });
 };
 
+// get current user's preferences
+const getCurrentUserPreferences = async (req, res) => {
+  const { user } = req;
+  const ids = req.user.preferences;
+  // eslint-disable-next-line func-names
+  await Preference.find({ _id: ids }, function (err, result) {
+    return response(res, 201, {
+      id: user._id,
+      preferences: result,
+    });
+  });
+};
+// get current user's allergies
+const getCurrentUserAllergies = async (req, res) => {
+  const { user } = req;
+  const ids = req.user.allergies;
+  // eslint-disable-next-line func-names
+  await Allergy.find({ _id: ids }, function (err, result) {
+    return response(res, 201, {
+      id: user._id,
+      allergies: result,
+    });
+  });
+};
+
 // Generate weekly meal plan
 
 const generateMealPlan = async (req, res) => {
@@ -243,4 +268,6 @@ module.exports = {
   generateMealPlan,
   addmultiplePreference,
   addmultipleAllergies,
+  getCurrentUserPreferences,
+  getCurrentUserAllergies,
 };

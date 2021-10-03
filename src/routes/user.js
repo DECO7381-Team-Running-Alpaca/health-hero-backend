@@ -14,6 +14,8 @@ const {
   generateMealPlan,
   addmultiplePreference,
   addmultipleAllergies,
+  getCurrentUserPreferences,
+  getCurrentUserAllergies,
 } = require('../controllers/user');
 
 const validator = require('../middlewares/validator');
@@ -89,4 +91,10 @@ router.post('/users/preferences', validator, addmultiplePreference);
 
 // Add multiple allergies
 router.post('/users/allergies', validator, addmultipleAllergies);
+
+// Get current user's preferences
+router.get('/users/getPref', validator, getCurrentUserPreferences);
+
+// Get current user's allergies
+router.get('/users/getAllergies', validator, getCurrentUserAllergies);
 module.exports = router;
