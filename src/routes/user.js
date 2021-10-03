@@ -12,8 +12,8 @@ const {
   removePreference,
   removeAllergy,
   generateMealPlan,
-  addmultiplePreference,
-  addmultipleAllergies,
+  addMultiplePreference,
+  addMultipleAllergies,
   getCurrentUserPreferences,
   getCurrentUserAllergies,
 } = require('../controllers/user');
@@ -87,10 +87,10 @@ router.delete('/users/allergies/:a_name', validator, removeAllergy);
 router.post('/users/meal', validator, generateMealPlan);
 
 // Add multiple preferences
-router.post('/users/preferences', validator, addmultiplePreference);
+router.post('/users/preferences', validator, addMultiplePreference);
 
 // Add multiple allergies
-router.post('/users/allergies', validator, addmultipleAllergies);
+router.post('/users/allergies', validator, addMultipleAllergies);
 
 // Get current user's preferences
 router.get('/users/getPref', validator, getCurrentUserPreferences);

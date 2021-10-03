@@ -142,58 +142,39 @@ const removeAllergy = async (req, res) => {
   return response(res, 400, `No such allergy found.`);
 };
 
-// add multipule preferences by body
-const addmultiplePreference = async (req, res) => {
-  const { userid, preference } = req.body;
-  preference.forEach(async (pref) => {
-    const nameofPreference = await Preference.findOne({ p_name: pref });
-    // check preference with Preference
-    if (!nameofPreference) {
-      return response(res, 400, `No such preference found.`);
-    }
-    const user = await User.findById(userid);
-    if (!user) {
-      return response(res, 400, `User not found.`);
-    }
-    const userPreference = user.preferences;
-    // check the preference with user's
-    await userPreference.forEach((uPref) => {
-      if (uPref.toString() === nameofPreference._id.toString()) {
-        return response(res, 400, `Preference duplicated`);
-      }
-    });
+// add multiple preferences by body
+const addMultiplePreference = async (req, res) => {
+  const { preferences } = req.body;
+  req.user.preferences = [];
 
-    req.user.preferences = req.user.preferences.concat(nameofPreference);
+  preferences.forEach(async (preference) => {
+    const objectPreference = await Preference.findOne({ p_name: preference });
+    if (objectPreference) {
+      req.user.preferences.push(objectPreference._id);
+    }
   });
+
   await req.user.save();
-  return response(res, 200, `Preferences added.`, {
+
+  return response(res, 200, 'Preferences added!', {
     user: req.user,
   });
 };
 
-// add multipule allergies by body
-const addmultipleAllergies = async (req, res) => {
-  const { userid, allergies } = req.body;
-  const { user } = req;
-  allergies.forEach(async (allergy) => {
-    const nameofAllergy = await Allergy.findOne({ a_name: allergy });
-    // check preference with Preference
-    if (!nameofAllergy) {
-      return response(res, 400, 'Allergy does not exist');
-    }
-    const userAllergies = user.allergies;
-    // check the preference with user's
-    await userAllergies.forEach((uAllergy) => {
-      if (uAllergy.toString() === nameofAllergy._id.toString()) {
-        return response(res, 400, 'Allergy duplicated.');
-      }
-    });
+// add multiple allergies by body
+const addMultipleAllergies = async (req, res) => {
+  const { allergies } = req.body;
+  req.user.allergies = [];
 
-    req.user.allergies = req.user.allergies.concat(nameofAllergy);
+  allergies.forEach(async (allergy) => {
+    const objectAllergy = await Allergy.findOne({ a_name: allergy });
+    if (objectAllergy) {
+      req.user.allergies.push(objectAllergy._id);
+    }
   });
-  await req.user.save();
-  return response(res, 201, 'Allergy has been added.', {
-    id: userid,
+
+  return response(res, 200, 'Allergies added!', {
+    user: req.user,
   });
 };
 
@@ -209,6 +190,7 @@ const getCurrentUserPreferences = async (req, res) => {
     });
   });
 };
+
 // get current user's allergies
 const getCurrentUserAllergies = async (req, res) => {
   const { user } = req;
@@ -266,8 +248,8 @@ module.exports = {
   removePreference,
   removeAllergy,
   generateMealPlan,
-  addmultiplePreference,
-  addmultipleAllergies,
+  addMultiplePreference,
+  addMultipleAllergies,
   getCurrentUserPreferences,
   getCurrentUserAllergies,
 };
