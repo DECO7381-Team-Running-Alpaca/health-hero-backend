@@ -173,6 +173,8 @@ const addMultipleAllergies = async (req, res) => {
     }
   });
 
+  await req.user.save();
+
   return response(res, 200, 'Allergies added!', {
     user: req.user,
   });
