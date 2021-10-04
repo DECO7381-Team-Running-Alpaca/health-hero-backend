@@ -142,7 +142,7 @@ const removeAllergy = async (req, res) => {
   return response(res, 400, `No such allergy found.`);
 };
 
-// add multiple preferences by body
+// add multiple preferences
 const addMultiplePreference = async (req, res) => {
   const { preferences } = req.body;
   req.user.preferences = [];
@@ -161,7 +161,7 @@ const addMultiplePreference = async (req, res) => {
   });
 };
 
-// add multiple allergies by body
+// add multiple allergies
 const addMultipleAllergies = async (req, res) => {
   const { allergies } = req.body;
   req.user.allergies = [];
@@ -170,6 +170,10 @@ const addMultipleAllergies = async (req, res) => {
     const objectAllergy = await Allergy.findOne({ a_name: allergy });
     if (objectAllergy) {
       req.user.allergies.push(objectAllergy._id);
+    } else {
+      const newAllergy = new Allergy({ a_name: allergy });
+      await newAllergy.save();
+      req.user.allergies.push(newAllergy._id);
     }
   });
 

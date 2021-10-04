@@ -97,4 +97,5 @@ router.get('/users/getPref', validator, getCurrentUserPreferences);
 
 // Get current user's allergies
 router.get('/users/getAllergies', validator, getCurrentUserAllergies);
+
 module.exports = router;
