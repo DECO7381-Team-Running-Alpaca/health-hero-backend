@@ -87,10 +87,10 @@ router.delete('/users/allergies/:a_name', validator, removeAllergy);
 router.post('/users/meal', validator, generateMealPlan);
 
 // Add multiple preferences
-router.post('/users/preferences', validator, addMultiplePreference);
+router.patch('/users/preferences', validator, addMultiplePreference);
 
 // Add multiple allergies
-router.post('/users/allergies', validator, addMultipleAllergies);
+router.patch('/users/allergies', validator, addMultipleAllergies);
 
 // Get current user's preferences
 router.get('/users/getPref', validator, getCurrentUserPreferences);

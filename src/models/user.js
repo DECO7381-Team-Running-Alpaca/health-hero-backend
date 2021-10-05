@@ -67,13 +67,13 @@ const userSchema = new mongoose.Schema({
   },
   preferences: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'Preference',
     },
   ],
   allergies: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'Allergy',
     },
   ],
@@ -108,12 +108,33 @@ userSchema.methods.checkUser = async function (password) {
   });
 };
 
-userSchema.pre('save', async function (next) {
-  bcrypt.hash(this.password, 10, (err, hash) => {
-    this.password = hash;
+userSchema.methods.savePreferences = async function (preferences) {
+  const user = this;
+
+  preferences.forEach((preference) => {
+    if (preference) {
+      user.preferences.push(preference);
+    }
   });
-  next();
-});
+
+  user.markModified('preferences');
+  await user.save();
+  return user;
+};
+
+userSchema.methods.saveAllergies = async function (allergies) {
+  const user = this;
+
+  allergies.forEach((allergy) => {
+    if (allergy) {
+      user.allergies.push(allergy);
+    }
+  });
+
+  user.markModified('allergies');
+  await user.save();
+  return user;
+};
 
 const User = mongoose.model('User', userSchema);
 

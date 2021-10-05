@@ -19,6 +19,10 @@ const signUp = async (req, res) => {
     return response(res, 400, 'User already exists');
   }
 
+  bcrypt.hash(user.password, 10, (err, hash) => {
+    user.password = hash;
+  });
+
   const token = await user.generateAuthToken();
   user.save();
   return response(res, 201, `${user.user_name} has been created`, {
@@ -149,17 +153,11 @@ const addMultiplePreference = async (req, res) => {
   const { preferences } = req.body;
   req.user.preferences = [];
 
-  preferences.forEach(async (preference) => {
-    const objectPreference = await Preference.findOne({ p_name: preference });
-    if (objectPreference) {
-      req.user.preferences.push(objectPreference._id);
-    }
-  });
-
-  await req.user.save();
+  await req.user.savePreferences(preferences);
 
   return response(res, 200, 'Preferences added!', {
-    user: req.user,
+    user: req.user.user_name,
+    preferences: req.user.preferences,
   });
 };
 
@@ -168,47 +166,41 @@ const addMultipleAllergies = async (req, res) => {
   const { allergies } = req.body;
   req.user.allergies = [];
 
-  allergies.forEach(async (allergy) => {
-    const objectAllergy = await Allergy.findOne({ a_name: allergy });
-    if (objectAllergy) {
-      req.user.allergies.push(objectAllergy._id);
-    } else {
-      const newAllergy = new Allergy({ a_name: allergy });
-      await newAllergy.save();
-      req.user.allergies.push(newAllergy._id);
-    }
-  });
-
-  await req.user.save();
+  await req.user.saveAllergies(allergies);
 
   return response(res, 200, 'Allergies added!', {
-    user: req.user,
+    user: req.user.user_name,
+    allergies: req.user.allergies,
   });
 };
 
 // get current user's preferences
 const getCurrentUserPreferences = async (req, res) => {
-  const { user } = req;
-  const ids = req.user.preferences;
-  // eslint-disable-next-line func-names
-  await Preference.find({ _id: ids }, function (err, result) {
-    return response(res, 201, {
-      id: user._id,
-      preferences: result,
-    });
+  const names = req.user.preferences;
+  const userPreferences = [];
+
+  names.forEach(async (name) => {
+    userPreferences.push(name);
+  });
+
+  return response(res, 201, {
+    id: req.user._id,
+    preferences: userPreferences,
   });
 };
 
 // get current user's allergies
 const getCurrentUserAllergies = async (req, res) => {
-  const { user } = req;
-  const ids = req.user.allergies;
-  // eslint-disable-next-line func-names
-  await Allergy.find({ _id: ids }, function (err, result) {
-    return response(res, 201, {
-      id: user._id,
-      allergies: result,
-    });
+  const names = req.user.allergies;
+  const userAllergies = [];
+
+  names.forEach(async (name) => {
+    userPreferences.push(name);
+  });
+
+  return response(res, 201, {
+    id: req.user._id,
+    allergies: userAllergies,
   });
 };
 
