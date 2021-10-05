@@ -39,10 +39,10 @@ const logIn = async (req, res) => {
     if (!result) {
       return response(res, 401, 'Username/Password incorrect.');
     }
-    const token = user.generateAuthToken();
+    const newToken = user.generateAuthToken();
     return response(res, 200, `${user.user_name} has been logged in.`, {
       id: user._id,
-      token,
+      token: user.tokens[user.tokens.length - 1],
     });
   });
 };
