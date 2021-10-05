@@ -4,6 +4,7 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable consistent-return */
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const Preference = require('../models/preference');
 const Allergy = require('../models/allergy');
@@ -34,14 +35,15 @@ const logIn = async (req, res) => {
     return response(res, 400, 'User not found');
   }
 
-  if (!user.checkUser(req.body.password)) {
-    return response(res, 401, 'Username/Password incorrect.');
-  }
-
-  const token = await user.generateAuthToken();
-  return response(res, 200, `${user.user_name} has been logged in.`, {
-    id: user._id,
-    token,
+  bcrypt.compare(req.body.password, user.password, (err, result) => {
+    if (!result) {
+      return response(res, 401, 'Username/Password incorrect.');
+    }
+    const token = user.generateAuthToken();
+    return response(res, 200, `${user.user_name} has been logged in.`, {
+      id: user._id,
+      token,
+    });
   });
 };
 

@@ -101,16 +101,15 @@ userSchema.methods.generateAuthToken = async function () {
 
 userSchema.methods.checkUser = async function (password) {
   const user = this;
-  const match = await bcrypt.compare(password, user.password);
-  if (match) {
-    return true;
-  }
-  return false;
+  await bcrypt.compare(password, user.password, function (err, result) {
+    return result;
+  });
 };
 
 userSchema.pre('save', async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
+  bcrypt.hash(this.password, 10, (err, hash) => {
+    this.password = hash;
+  });
   next();
 });
 
