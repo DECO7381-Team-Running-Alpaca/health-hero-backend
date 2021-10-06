@@ -195,7 +195,7 @@ const getCurrentUserAllergies = async (req, res) => {
   const userAllergies = [];
 
   names.forEach(async (name) => {
-    userPreferences.push(name);
+    userAllergies.push(name);
   });
 
   return response(res, 201, {
