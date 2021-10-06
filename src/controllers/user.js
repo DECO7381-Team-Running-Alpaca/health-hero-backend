@@ -183,7 +183,7 @@ const getCurrentUserPreferences = async (req, res) => {
     userPreferences.push(name);
   });
 
-  return response(res, 201, {
+  return response(res, 201, 'Fetch preferences successfully.', {
     id: req.user._id,
     preferences: userPreferences,
   });
@@ -198,7 +198,7 @@ const getCurrentUserAllergies = async (req, res) => {
     userAllergies.push(name);
   });
 
-  return response(res, 201, {
+  return response(res, 201, 'Fetch allergies successfully.', {
     id: req.user._id,
     allergies: userAllergies,
   });
