@@ -20,7 +20,7 @@ const validator = async (req, res, next) => {
     next();
   } catch (error) {
     res.status(401).send({
-      message: 'Authentification failed. Please contact Tony~',
+      message: 'Authentification failed. Please contact Zipu Tang',
     });
   }
 };
