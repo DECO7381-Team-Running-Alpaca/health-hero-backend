@@ -19,7 +19,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3030',
+        url: 'https://health-hero-team-ra.herokuapp.com/',
       },
     ],
   },
@@ -35,23 +35,9 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use(express.json());
 
-// /**
-//  * @swagger
-//  * /:
-//  *  get:
-//  *  summary: Return the welcome page
-//  *  responses:
-//  *    200:
-//  *      description:
-//  *      content:
-//  *        application/json:
-//  *          schema:
-//  *            type: string
-//  */
-
-// app.get('/', (req, res) => {
-//   res.send('<h1>Welcome to Health Hero</h1>');
-// });
+app.get('/', (req, res) => {
+  res.send('<h1>Welcome to Health Hero</h1>');
+});
 
 app.use(userRouter);
 
