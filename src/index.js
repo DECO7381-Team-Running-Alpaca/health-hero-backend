@@ -29,7 +29,9 @@ const options = {
   apis: ['src/routes/*.js'],
 };
 const specs = swaggerJsDoc(options);
-app.use('/', swaggerUI.serve, swaggerUI.setup(specs));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
+
+app.get('/', (req, res) => res.send('<h1>Welcome to Health Hero</h1>'));
 
 app.use(express.json());
 
