@@ -304,7 +304,7 @@ router.delete('/users/allergies/:a_name', validator, removeAllergy);
  *          description: UnAuthorized
  */
 // Generate meal plan
-router.post('/users/meal', validator, generateMealPlan);
+router.get('/users/meal', validator, generateMealPlan);
 
 /**
  * @swagger
