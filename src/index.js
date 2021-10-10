@@ -2,13 +2,16 @@ require('dotenv').config();
 const express = require('express');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
-const { connectToDB } = require('./utils/mongoose');
 
 const userRouter = require('./routes/user');
-// eslint-disable-next-line no-unused-vars
-const devRouter = require('./routes/dev');
+const customisedRouter = require('./routes/customised');
 const errorHandler = require('./middlewares/errorHandler');
+const { connectToDB } = require('./utils/mongoose');
 
+const app = express();
+const port = process.env.PORT || 3030;
+
+// Init Swagger API document
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -25,25 +28,15 @@ const options = {
   },
   apis: ['src/routes/*.js'],
 };
-
 const specs = swaggerJsDoc(options);
-
-const app = express();
-const port = process.env.PORT || 3030;
-
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
+app.use('/', swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('<h1>Welcome to Health Hero</h1>');
-});
+app.use(errorHandler);
 
 app.use(userRouter);
-
-app.use(devRouter);
-
-app.use(errorHandler);
+app.use(customisedRouter);
 
 connectToDB()
   .then(() => {

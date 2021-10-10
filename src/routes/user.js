@@ -1,6 +1,4 @@
 const express = require('express');
-// const swaggerJsDoc = require('swagger-jsdoc');
-// const swaggerUI = require('swagger-ui-express');
 
 const {
   getCurrentUser,
@@ -9,13 +7,7 @@ const {
   signUp,
   logIn,
   logOut,
-  removePreference,
-  removeAllergy,
   generateMealPlan,
-  addMultiplePreference,
-  addMultipleAllergies,
-  getCurrentUserPreferences,
-  getCurrentUserAllergies,
 } = require('../controllers/user');
 
 const validator = require('../middlewares/validator');
@@ -114,18 +106,19 @@ const router = new express.Router();
  */
 const globalCathMW = (controller) => (req, res, next) => {
   Promise.resolve(controller(req, res, next)).catch(next);
-}; 
+};
+
 // Sign up
 router.post('/users', globalCathMW(signUp));
 
 // Log in
-router.post('/users/login', logIn);
+router.post('/users/login', globalCathMW(logIn));
 
 // Logout
-router.post('/users/logout', validator, logOut);
+router.post('/users/logout', validator, globalCathMW(logOut));
 
 // Get current user
-router.get('/users/me', validator, getCurrentUser);
+router.get('/users/me', validator, globalCathMW(getCurrentUser));
 
 /**
  * @swagger
@@ -178,9 +171,7 @@ router.get('/users/me', validator, getCurrentUser);
  *       401:
  *          description: UnAuthorized
  */
-
-// Update current user
-router.patch('/users/me', validator, updateCurrentUser);
+router.patch('/users/me', validator, globalCathMW(updateCurrentUser));
 
 /**
  * @swagger
@@ -204,75 +195,8 @@ router.patch('/users/me', validator, updateCurrentUser);
  *       401:
  *          description: UnAuthorized
  */
-// Delete current user
-router.delete('/users/me', validator, deleteCurrentUser);
-/**
- * @swagger
- * /users/preferences/:p_name:
- *   delete:
- *     security:
- *       -bearerAuth: []
- *     summary: delete the prefernce of users
- *     tags: [Users]
- *     parameters:
- *       - in: user
- *         name: preference
- *         required: true
- *         schema:
- *           type: string
- *           minimum: 2
- *         description: The preference should be deleted of current user
- *     responses:
- *       200:
- *         description: success!
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
- *       400:
- *          description: Bad Request
- *       401:
- *          description: UnAuthorized
- */
+router.delete('/users/me', validator, globalCathMW(deleteCurrentUser));
 
-// Remove a preference from a user
-router.delete('/users/preferences/:p_name', validator, removePreference);
-
-/**
- * @swagger
- * /users/allergies/:a_name:
- *   delete:
- *     security:
- *       -bearerAuth: []
- *     summary: delete the allergy of users
- *     tags: [Users]
- *     parameters:
- *       - in: user
- *         name: allergy
- *         required: true
- *         schema:
- *           type: string
- *           minimum: 2
- *         description: The allergy should be deleted of current user
- *     responses:
- *       200:
- *         description: success!
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
- *       400:
- *          description: Bad Request
- *       401:
- *          description: UnAuthorized
- */
-
-// Remove an allergy from a user
-router.delete('/users/allergies/:a_name', validator, removeAllergy);
 /**
  * @swagger
  * /users/meal:
@@ -303,131 +227,6 @@ router.delete('/users/allergies/:a_name', validator, removeAllergy);
  *       401:
  *          description: UnAuthorized
  */
-// Generate meal plan
 router.get('/users/meal', validator, generateMealPlan);
-
-/**
- * @swagger
- * /users/preferences:
- *   post:
- *     security:
- *       -bearerAuth: []
- *     summary: Add multiple preferences
- *     tags: [Users]
- *     parameters:
- *       - in: user
- *         name: preferences
- *         required: true
- *         schema:
- *           type: arrary
- *           minimum: 2
- *         description: The prefernces should be added into current user
- *     responses:
- *       200:
- *         description: success!
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
- *               enum: [a, b, c, d, new]
- *               example: [a,b,c]
- *       400:
- *          description: Bad Request
- *       401:
- *          description: UnAuthorized
- */
-// Add multiple preferences
-router.patch('/users/preferences', validator, addMultiplePreference);
-
-/**
- * @swagger
- * /users/allergies:
- *   post:
- *     security:
- *       -bearerAuth: []
- *     summary: Add multiple allergies
- *     tags: [Users]
- *     parameters:
- *       - in: user
- *         name: allergies
- *         required: true
- *         schema:
- *           type: arrary
- *           minimum: 2
- *         description: The allergies should be added into current user
- *     responses:
- *       200:
- *         description: success!
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
- *               enum: [a, b, c, d, new]
- *               example: [a,b,c]
- *       400:
- *          description: Bad Request
- *       401:
- *          description: UnAuthorized
- */
-// Add multiple allergies
-router.patch('/users/allergies', validator, addMultipleAllergies);
-
-/**
- * @swagger
- * /users/getPref:
- *   get:
- *     security:
- *       -bearerAuth: []
- *     summary: Returen the users'preferences
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: success!
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
- *               num: [a, b, c, d, new]
- *               example: [a,b,c]
- *       400:
- *          description: Bad Request
- *       401:
- *          description: UnAuthorized
- */
-// Get current user's preferences
-router.get('/users/getPref', validator, getCurrentUserPreferences);
-
-/**
- * @swagger
- * /users/getAllergies:
- *   get:
- *     security:
- *       -bearerAuth: []
- *     summary: Returen the users'allergies
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: success!
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
- *               num: [a, b, c, d, new]
- *               example: [a,b,c]
- *       400:
- *          description: Bad Request
- *       401:
- *          description: UnAuthorized
- */
-// Get current user's allergies
-router.get('/users/getAllergies', validator, getCurrentUserAllergies);
 
 module.exports = router;

@@ -7,8 +7,6 @@
 /* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const Preference = require('../models/preference');
-const Allergy = require('../models/allergy');
 const response = require('../utils/resFormatter');
 const prefFoodSearch = require('../utils/preferenceFoodTitle');
 const randomFoodSearch = require('../utils/randomFoodTitle');
@@ -96,62 +94,6 @@ const deleteCurrentUser = async (req, res) => {
   });
 };
 
-// Add a preference to current user
-const addPreference = async (req, res) => {
-  const preference = await Preference.findOne({ p_name: req.body.p_name });
-  if (!preference) {
-    return response(res, 400, `Preference not found`);
-  }
-
-  const allPreferences = req.user.preferences;
-  allPreferences.forEach((pref) => {
-    if (pref.toString() === preference._id.toString()) {
-      return response(res, 400, `Preference duplicated.`);
-    }
-  });
-
-  req.user.preferences = req.user.preferences.concat(preference);
-  await req.user.save();
-
-  return response(res, 200, `Preferece has been added.`, {
-    preferences: req.user.preferences,
-  });
-};
-
-// Remove a preference from a user
-const removePreference = async (req, res) => {
-  const targerPreference = await Preference.findOne({
-    p_name: req.params.p_name,
-  });
-  const userPreference = req.user.preferences;
-
-  userPreference.forEach((preference) => {
-    if (preference.toString() === targerPreference._id.toString()) {
-      req.user.preferences = req.user.preferences.remove(targerPreference);
-      return response(res, 200, `Preference deleted.`, {
-        preferences: req.user.preferences,
-      });
-    }
-  });
-  return response(res, 400, `No such preference found.`);
-};
-
-// Remove an allergy from a user
-const removeAllergy = async (req, res) => {
-  const targerAllergy = await Allergy.findOne({ a_name: req.params.a_name }); // 1+2
-  const userAllergy = req.user.allergies;
-
-  userAllergy.forEach((allergy) => {
-    if (allergy.toString() === targerAllergy._id.toString()) {
-      req.user.allergies = req.user.allergies.remove(targerAllergy);
-      return response(res, 200, `Allergy deleted.`, {
-        allergies: req.user.allergies,
-      });
-    }
-  });
-  return response(res, 400, `No such allergy found.`);
-};
-
 // add multiple preferences
 const addMultiplePreference = async (req, res) => {
   const { preferences } = req.body;
@@ -209,7 +151,6 @@ const getCurrentUserAllergies = async (req, res) => {
 };
 
 // Generate weekly meal plan
-
 const generateMealPlan = async (req, res) => {
   const shuffleArray = (arr) => {
     for (let i = arr.length - 1; i > 0; i -= 1) {
@@ -340,9 +281,6 @@ module.exports = {
   getCurrentUser,
   updateCurrentUser,
   deleteCurrentUser,
-  addPreference,
-  removePreference,
-  removeAllergy,
   generateMealPlan,
   addMultiplePreference,
   addMultipleAllergies,
