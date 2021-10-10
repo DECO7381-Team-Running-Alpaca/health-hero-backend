@@ -84,7 +84,7 @@ router.delete('/users/preferences/:p_name', validator, removePreference);
 router.delete('/users/allergies/:a_name', validator, removeAllergy);
 
 // Generate meal plan
-router.post('/users/meal', validator, generateMealPlan);
+router.get('/users/meal', validator, generateMealPlan);
 
 // Add multiple preferences
 router.patch('/users/preferences', validator, addMultiplePreference);

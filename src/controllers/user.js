@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-undef */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-unused-vars */
@@ -9,6 +10,9 @@ const User = require('../models/user');
 const Preference = require('../models/preference');
 const Allergy = require('../models/allergy');
 const response = require('../utils/resFormatter');
+const prefFoodSearch = require('../utils/preferenceFoodTitle');
+const randomFoodSearch = require('../utils/randomFoodTitle');
+const foodInformation = require('../utils/recipeInformation');
 
 // Sign Up
 const signUp = async (req, res) => {
@@ -207,33 +211,125 @@ const getCurrentUserAllergies = async (req, res) => {
 // Generate weekly meal plan
 
 const generateMealPlan = async (req, res) => {
-  const mealPlan = {
-    monBreakfast: '1',
-    monLunch: '2',
-    monDinner: '3',
-    tueBreakfase: '4',
-    tueLunch: '5',
-    tueDinner: '6',
-    wedBreakfase: '7',
-    wedLunch: '8',
-    wedDinner: '9',
-    thuBreakfase: '10',
-    thuLunch: '11',
-    thuDinner: '12',
-    friBreakfase: '13',
-    friLunch: '14',
-    friDinner: '15',
-    satBreakfase: '16',
-    satLunch: '17',
-    satDinner: '18',
-    sunBreakfase: '19',
-    sunLunch: '20',
-    sunDinner: '21',
+  const shuffleArray = (arr) => {
+    for (let i = arr.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
   };
 
-  req.user.currentPlan = mealPlan;
-  res.send({
-    user: req.user,
+  const userPreferences = req.user.preferences;
+  const userAllergies = req.user.allergies;
+
+  // // Generate an array of seven preferences
+  // const preferenceInf = [];
+  // for (let i = 0; i < 7; i += 1) {
+  //   shuffleArray(userPreferences);
+  //   preferenceInf.push(userPreferences[0]);
+  // }
+
+  // // ID list of preference meals
+  // const preferenceMealIDs = [];
+
+  // preferenceInf.forEach((preference) => {
+  //   prefFoodSearch(preference, (error, { id } = {}) => {
+  //     if (error) {
+  //       return response(res, 400, `Unexpected Error`);
+  //     }
+  //     preferenceMealIDs.push(id);
+  //   });
+  // });
+
+  // console.log(preferenceMealIDs);
+
+  // ID list of random meals
+  const randomMealIDs = [];
+
+  randomFoodSearch(100, (error, { ids } = {}) => {
+    if (error) {
+      return response(res, 400, `Unexpected Error`);
+    }
+    randomMealIDs.push(ids);
+  });
+
+  console.log(randomMealIDs);
+
+  // // Combination of two list
+  // const weeklyMealsIDs = [];
+  // weeklyMealsIDs.push(
+  //   shuffleArray[(randomMealIDs[0], randomMealIDs[1], preferenceMealIDs[0])]
+  // );
+  // weeklyMealsIDs.push(
+  //   shuffleArray[(randomMealIDs[2], randomMealIDs[3], preferenceMealIDs[1])]
+  // );
+  // weeklyMealsIDs.push(
+  //   shuffleArray[(randomMealIDs[4], randomMealIDs[5], preferenceMealIDs[2])]
+  // );
+  // weeklyMealsIDs.push(
+  //   shuffleArray[(randomMealIDs[6], randomMealIDs[7], preferenceMealIDs[3])]
+  // );
+  // weeklyMealsIDs.push(
+  //   shuffleArray[(randomMealIDs[8], randomMealIDs[9], preferenceMealIDs[4])]
+  // );
+  // weeklyMealsIDs.push(
+  //   shuffleArray[(randomMealIDs[10], randomMealIDs[11], preferenceMealIDs[5])]
+  // );
+  // weeklyMealsIDs.push(
+  //   shuffleArray[(randomMealIDs[12], randomMealIDs[13], preferenceMealIDs[6])]
+  // );
+
+  // console.log(weeklyMealsIDs);
+
+  // const weeklyPlan = [];
+  // // Search details of each meals
+  // weeklyMealsIDs.forEach((mealID) => {
+  //   foodInformation(
+  //     mealID,
+  //     (error, { title, ingre, instruct, sourceUrl, image } = {}) => {
+  //       if (error) {
+  //         return response(res, 400, `Unexpected Error`);
+  //       }
+  //       weeklyPlan.push({
+  //         title,
+  //         ingredients: ingre,
+  //         instruction: instruct,
+  //         sourceUrl,
+  //         imageUrl: image,
+  //       });
+  //     }
+  //   );
+  // });
+
+  // const mealPlan = {
+  //   monBreakfast: weeklyPlan[0],
+  //   monLunch: weeklyPlan[1],
+  //   monDinner: weeklyPlan[2],
+  //   tueBreakfase: weeklyPlan[3],
+  //   tueLunch: weeklyPlan[4],
+  //   tueDinner: weeklyPlan[5],
+  //   wedBreakfase: weeklyPlan[6],
+  //   wedLunch: weeklyPlan[7],
+  //   wedDinner: weeklyPlan[8],
+  //   thuBreakfase: weeklyPlan[9],
+  //   thuLunch: weeklyPlan[10],
+  //   thuDinner: weeklyPlan[11],
+  //   friBreakfase: weeklyPlan[12],
+  //   friLunch: weeklyPlan[13],
+  //   friDinner: weeklyPlan[14],
+  //   satBreakfase: weeklyPlan[15],
+  //   satLunch: weeklyPlan[16],
+  //   satDinner: weeklyPlan[17],
+  //   sunBreakfase: weeklyPlan[18],
+  //   sunLunch: weeklyPlan[19],
+  //   sunDinner: weeklyPlan[20],
+  // };
+
+  // req.user.currentPlan = mealPlan;
+  // req.user.save();
+  return response(res, 200, 'Weekly plan generated.', {
+    userPlan: req.user.currentPlan,
   });
 };
 
