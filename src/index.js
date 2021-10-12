@@ -8,6 +8,9 @@ const customisedRouter = require('./routes/customised');
 const errorHandler = require('./middlewares/errorHandler');
 const { connectToDB } = require('./utils/mongoose');
 
+const validator = require('./middlewares/validator');
+const response = require('./utils/resFormatter');
+
 const app = express();
 const port = process.env.PORT || 3030;
 
@@ -32,6 +35,38 @@ const specs = swaggerJsDoc(options);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
 app.get('/', (req, res) => res.send('<h1>Welcome to Health Hero</h1>'));
+
+// TODO: delete the previous accounts and signup with new ones
+app.post('/testOnMixed', validator, async (req, res) => {
+  const tester = req.user;
+  // Assume this is the request body.
+  tester.current_plan = {
+    monBreakfast: {
+      title: 'abc',
+      ingredients: ['a', 'b', 'c'],
+      instructions: 'abcdefg',
+    },
+    monLunch: {
+      title: 'abc',
+      ingredients: ['a', 'b', 'c'],
+      instructions: 'abcdefg',
+    },
+  };
+
+  // Update must follow the below part.
+  tester.markModified('current_plan');
+  tester.save();
+  return response(res, 200, 'Update User plan successfully', tester);
+});
+
+app.get('/testOnMixed', validator, async (req, res) => {
+  return response(
+    res,
+    200,
+    'Get Meal plan successfully',
+    req.user.current_plan
+  );
+});
 
 app.use(express.json());
 

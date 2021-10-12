@@ -65,10 +65,7 @@ const userSchema = new mongoose.Schema({
     min: 30,
     max: 250,
   },
-  current_plan: {
-    type: Object,
-    default: {},
-  },
+  current_plan: mongoose.Mixed,
   preferences: [
     {
       type: String,
