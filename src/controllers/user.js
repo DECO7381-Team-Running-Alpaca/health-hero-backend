@@ -8,8 +8,8 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const response = require('../utils/resFormatter');
-const prefFoodSearch = require('../utils/preferenceFoodTitle');
 const randomFoodSearch = require('../utils/randomFoodTitle');
+const prefFoodSearch = require('../utils/preferenceFoodTitle');
 const foodInformation = require('../utils/recipeInformation');
 
 // Sign Up
@@ -159,118 +159,230 @@ const generateMealPlan = async (req, res) => {
       arr[i] = arr[j];
       arr[j] = temp;
     }
+    return arr;
   };
 
   const userPreferences = req.user.preferences;
   const userAllergies = req.user.allergies;
 
-  // // Generate an array of seven preferences
-  // const preferenceInf = [];
-  // for (let i = 0; i < 7; i += 1) {
-  //   shuffleArray(userPreferences);
-  //   preferenceInf.push(userPreferences[0]);
-  // }
-
-  // // ID list of preference meals
-  // const preferenceMealIDs = [];
-
-  // preferenceInf.forEach((preference) => {
-  //   prefFoodSearch(preference, (error, { id } = {}) => {
-  //     if (error) {
-  //       return response(res, 400, `Unexpected Error`);
-  //     }
-  //     preferenceMealIDs.push(id);
-  //   });
-  // });
-
-  // console.log(preferenceMealIDs);
-
   // ID list of random meals
-  const randomMealIDs = [];
-
-  randomFoodSearch(100, (error, { ids } = {}) => {
-    if (error) {
-      return response(res, 400, `Unexpected Error`);
-    }
-    randomMealIDs.push(ids);
+  let randomMealIDs;
+  await randomFoodSearch().then((apiResponse) => {
+    randomMealIDs = apiResponse;
   });
 
-  console.log(randomMealIDs);
+  // Generate an array of seven preferences
+  const preferenceInf = [];
+  for (let i = 0; i < 7; i += 1) {
+    shuffleArray(userPreferences);
+    preferenceInf.push(userPreferences[0]);
+  }
 
-  // // Combination of two list
-  // const weeklyMealsIDs = [];
-  // weeklyMealsIDs.push(
-  //   shuffleArray[(randomMealIDs[0], randomMealIDs[1], preferenceMealIDs[0])]
-  // );
-  // weeklyMealsIDs.push(
-  //   shuffleArray[(randomMealIDs[2], randomMealIDs[3], preferenceMealIDs[1])]
-  // );
-  // weeklyMealsIDs.push(
-  //   shuffleArray[(randomMealIDs[4], randomMealIDs[5], preferenceMealIDs[2])]
-  // );
-  // weeklyMealsIDs.push(
-  //   shuffleArray[(randomMealIDs[6], randomMealIDs[7], preferenceMealIDs[3])]
-  // );
-  // weeklyMealsIDs.push(
-  //   shuffleArray[(randomMealIDs[8], randomMealIDs[9], preferenceMealIDs[4])]
-  // );
-  // weeklyMealsIDs.push(
-  //   shuffleArray[(randomMealIDs[10], randomMealIDs[11], preferenceMealIDs[5])]
-  // );
-  // weeklyMealsIDs.push(
-  //   shuffleArray[(randomMealIDs[12], randomMealIDs[13], preferenceMealIDs[6])]
-  // );
+  // ID list of preference meals
+  const prefMealIDs = [];
+  await prefFoodSearch(preferenceInf[0]).then((apiResponse) => {
+    prefMealIDs.push(apiResponse);
+  });
+  await prefFoodSearch(preferenceInf[1]).then((apiResponse) => {
+    prefMealIDs.push(apiResponse);
+  });
+  await prefFoodSearch(preferenceInf[2]).then((apiResponse) => {
+    prefMealIDs.push(apiResponse);
+  });
+  await prefFoodSearch(preferenceInf[3]).then((apiResponse) => {
+    prefMealIDs.push(apiResponse);
+  });
+  await prefFoodSearch(preferenceInf[4]).then((apiResponse) => {
+    prefMealIDs.push(apiResponse);
+  });
+  await prefFoodSearch(preferenceInf[5]).then((apiResponse) => {
+    prefMealIDs.push(apiResponse);
+  });
+  await prefFoodSearch(preferenceInf[6]).then((apiResponse) => {
+    prefMealIDs.push(apiResponse);
+  });
 
-  // console.log(weeklyMealsIDs);
+  // Combination of two list
+  const weeklyMealsIDs = [];
+  weeklyMealsIDs.push(
+    ...shuffleArray([randomMealIDs[0], randomMealIDs[1], prefMealIDs[0]])
+  );
+  weeklyMealsIDs.push(
+    ...shuffleArray([randomMealIDs[2], randomMealIDs[3], prefMealIDs[1]])
+  );
+  weeklyMealsIDs.push(
+    ...shuffleArray([randomMealIDs[4], randomMealIDs[5], prefMealIDs[2]])
+  );
+  weeklyMealsIDs.push(
+    ...shuffleArray([randomMealIDs[6], randomMealIDs[7], prefMealIDs[3]])
+  );
+  weeklyMealsIDs.push(
+    ...shuffleArray([randomMealIDs[8], randomMealIDs[9], prefMealIDs[4]])
+  );
+  weeklyMealsIDs.push(
+    ...shuffleArray([randomMealIDs[10], randomMealIDs[11], prefMealIDs[5]])
+  );
+  weeklyMealsIDs.push(
+    ...shuffleArray([randomMealIDs[12], randomMealIDs[13], prefMealIDs[6]])
+  );
 
-  // const weeklyPlan = [];
-  // // Search details of each meals
-  // weeklyMealsIDs.forEach((mealID) => {
-  //   foodInformation(
-  //     mealID,
-  //     (error, { title, ingre, instruct, sourceUrl, image } = {}) => {
-  //       if (error) {
-  //         return response(res, 400, `Unexpected Error`);
-  //       }
-  //       weeklyPlan.push({
-  //         title,
-  //         ingredients: ingre,
-  //         instruction: instruct,
-  //         sourceUrl,
-  //         imageUrl: image,
-  //       });
-  //     }
-  //   );
-  // });
+  const weeklyPlan = [];
+  await foodInformation(weeklyMealsIDs[0]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[1]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[2]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[3]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[4]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[5]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[6]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[7]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[8]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[9]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[10]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[11]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[12]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[13]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[14]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[15]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[16]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[17]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[18]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[19]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
+  await foodInformation(weeklyMealsIDs[20]).then((apiResponse) => {
+    weeklyPlan.push(apiResponse);
+  });
 
-  // const mealPlan = {
-  //   monBreakfast: weeklyPlan[0],
-  //   monLunch: weeklyPlan[1],
-  //   monDinner: weeklyPlan[2],
-  //   tueBreakfase: weeklyPlan[3],
-  //   tueLunch: weeklyPlan[4],
-  //   tueDinner: weeklyPlan[5],
-  //   wedBreakfase: weeklyPlan[6],
-  //   wedLunch: weeklyPlan[7],
-  //   wedDinner: weeklyPlan[8],
-  //   thuBreakfase: weeklyPlan[9],
-  //   thuLunch: weeklyPlan[10],
-  //   thuDinner: weeklyPlan[11],
-  //   friBreakfase: weeklyPlan[12],
-  //   friLunch: weeklyPlan[13],
-  //   friDinner: weeklyPlan[14],
-  //   satBreakfase: weeklyPlan[15],
-  //   satLunch: weeklyPlan[16],
-  //   satDinner: weeklyPlan[17],
-  //   sunBreakfase: weeklyPlan[18],
-  //   sunLunch: weeklyPlan[19],
-  //   sunDinner: weeklyPlan[20],
-  // };
+  const mealPlan = {
+    monBreakfast: weeklyPlan[0],
+    monLunch: weeklyPlan[1],
+    monDinner: weeklyPlan[2],
+    tueBreakfase: weeklyPlan[3],
+    tueLunch: weeklyPlan[4],
+    tueDinner: weeklyPlan[5],
+    wedBreakfase: weeklyPlan[6],
+    wedLunch: weeklyPlan[7],
+    wedDinner: weeklyPlan[8],
+    thuBreakfase: weeklyPlan[9],
+    thuLunch: weeklyPlan[10],
+    thuDinner: weeklyPlan[11],
+    friBreakfase: weeklyPlan[12],
+    friLunch: weeklyPlan[13],
+    friDinner: weeklyPlan[14],
+    satBreakfase: weeklyPlan[15],
+    satLunch: weeklyPlan[16],
+    satDinner: weeklyPlan[17],
+    sunBreakfase: weeklyPlan[18],
+    sunLunch: weeklyPlan[19],
+    sunDinner: weeklyPlan[20],
+  };
 
-  // req.user.currentPlan = mealPlan;
-  // req.user.save();
+  req.user.currentPlan = mealPlan;
+  req.user.save();
   return response(res, 200, 'Weekly plan generated.', {
     userPlan: req.user.currentPlan,
+  });
+};
+
+// Get meal plan of certain date
+const getDailyMealPlan = async (req, res) => {
+  const userMealPlan = req.user.currentPlan;
+  const date = req.body;
+  let meals;
+
+  switch (date) {
+    case '1':
+      meals = {
+        breakfast: userMealPlan[0],
+        lunch: userMealPlan[1],
+        dinner: userMealPlan[2],
+      };
+      break;
+    case '2':
+      meals = {
+        breakfast: userMealPlan[3],
+        lunch: userMealPlan[4],
+        dinner: userMealPlan[5],
+      };
+      break;
+    case '3':
+      meals = {
+        breakfast: userMealPlan[6],
+        lunch: userMealPlan[7],
+        dinner: userMealPlan[8],
+      };
+      break;
+    case '4':
+      meals = {
+        breakfast: userMealPlan[9],
+        lunch: userMealPlan[10],
+        dinner: userMealPlan[11],
+      };
+      break;
+    case '5':
+      meals = {
+        breakfast: userMealPlan[12],
+        lunch: userMealPlan[13],
+        dinner: userMealPlan[14],
+      };
+      break;
+    case '6':
+      meals = {
+        breakfast: userMealPlan[15],
+        lunch: userMealPlan[16],
+        dinner: userMealPlan[17],
+      };
+      break;
+    case '7':
+      meals = {
+        breakfast: userMealPlan[18],
+        lunch: userMealPlan[19],
+        dinner: userMealPlan[20],
+      };
+      break;
+    default:
+      return response(res, 400, 'Wrong body format.');
+  }
+  return response(res, 200, 'Daily plan got.', {
+    plan: meals,
   });
 };
 
@@ -286,4 +398,5 @@ module.exports = {
   addMultipleAllergies,
   getCurrentUserPreferences,
   getCurrentUserAllergies,
+  getDailyMealPlan,
 };

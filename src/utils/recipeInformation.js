@@ -1,34 +1,29 @@
-const request = require('request');
+const axios = require('axios').default;
 
-const apiKey = '15eac1d9f7be4a208037a9f6be0e9112';
-
-const foodInformation = (id, callback) => {
+const foodInformation = async (id) => {
+  const apiKey = '86b3a96f57c149df83551cd3a481adcc';
   const url = `https://api.spoonacular.com/recipes/${encodeURIComponent(
     id
   )}/information?apiKey=${encodeURIComponent(apiKey)}&includeNutrition=false`;
+  try {
+    const apiResponse = await axios.get(url);
+    const info = apiResponse.data;
 
-  request({ url, json: true }, (error, response) => {
-    const data = response.body;
-
-    if (error) {
-      callback('Could you please turn on your WiFi?', undefined);
-    }
-    if (data.length === 0) {
-      callback("Nothing found, I'm very sure that it's your fault.", undefined);
-    }
-
+    const { title, extendedIngredients, instructions, sourceUrl, image } = info;
     const ingredients = [];
-    data.extendedIngredients.forEach((ingre) => {
-      ingredients.push(ingre.name);
+    extendedIngredients.forEach((element) => {
+      ingredients.push(element.name);
     });
-    callback(undefined, {
-      title: data.title,
-      ingres: ingredients,
-      instruct: data.instructions,
-      sourceUrl: data.sourceUrl,
-      image: data.image,
-    });
-  });
+    return {
+      title,
+      ingredients,
+      instructions,
+      sourceUrl,
+      image,
+    };
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports = foodInformation;
