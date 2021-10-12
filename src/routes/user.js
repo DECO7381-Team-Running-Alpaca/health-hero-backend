@@ -83,6 +83,109 @@ const router = new express.Router();
 
 /**
  * @swagger
+ * tags:
+ *   name: Preference
+ *   description: The users'preference managing API
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Allergy
+ *   description: The users'allergies managing API
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Meal
+ *   description: The users'allergies managing API
+ */
+
+const globalCathMW = (controller) => (req, res, next) => {
+  Promise.resolve(controller(req, res, next)).catch(next);
+};
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     security:
+ *       -bearerAuth: []
+ *     summary: Sign up
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: success!
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *               example: {id: 123qwe, user_name: a123sad, token: 50}
+ *       400:
+ *          description: Bad Request
+ *       401:
+ *          description: UnAuthorized
+ */
+// Sign up
+router.post('/users', globalCathMW(signUp));
+
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     security:
+ *       -bearerAuth: []
+ *     summary: Log in
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: success!
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *               example: {id: 123qwe, user_name: a123sad, token: 50}
+ *       400:
+ *          description: Bad Request
+ *       401:
+ *          description: UnAuthorized
+ */
+// Log in
+router.post('/users/login', globalCathMW(logIn));
+
+/**
+ * @swagger
+ * /users/logout:
+ *   post:
+ *     security:
+ *       -bearerAuth: []
+ *     summary: Log out
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: success!
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *               example: {id: 123qwe, user_name: a123sad, token: 50}
+ *       400:
+ *          description: Bad Request
+ *       401:
+ *          description: UnAuthorized
+ */
+// Logout
+router.post('/users/logout', validator, globalCathMW(logOut));
+
+/**
+ * @swagger
  * /users/me:
  *   get:
  *     security:
@@ -104,19 +207,6 @@ const router = new express.Router();
  *       401:
  *          description: UnAuthorized
  */
-const globalCathMW = (controller) => (req, res, next) => {
-  Promise.resolve(controller(req, res, next)).catch(next);
-};
-
-// Sign up
-router.post('/users', globalCathMW(signUp));
-
-// Log in
-router.post('/users/login', globalCathMW(logIn));
-
-// Logout
-router.post('/users/logout', validator, globalCathMW(logOut));
-
 // Get current user
 router.get('/users/me', validator, globalCathMW(getCurrentUser));
 
@@ -204,7 +294,7 @@ router.delete('/users/me', validator, globalCathMW(deleteCurrentUser));
  *     security:
  *       -bearerAuth: []
  *     summary: generate a plan
- *     tags: [Users]
+ *     tags: [Meal]
  *     parameters:
  *       - in: user
  *         name: food

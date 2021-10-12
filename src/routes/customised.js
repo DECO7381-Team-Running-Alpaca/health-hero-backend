@@ -22,7 +22,7 @@ const globalCathMW = (controller) => (req, res, next) => {
  *     security:
  *       -bearerAuth: []
  *     summary: Add multiple preferences
- *     tags: [Users]
+ *     tags: [Preference]
  *     parameters:
  *       - in: user
  *         name: preferences
@@ -57,7 +57,7 @@ router.patch('/preferences', validator, globalCathMW(addMultiplePreference));
  *     security:
  *       -bearerAuth: []
  *     summary: Add multiple allergies
- *     tags: [Users]
+ *     tags: [Allergy]
  *     parameters:
  *       - in: user
  *         name: allergies
@@ -92,7 +92,7 @@ router.patch('/allergies', validator, globalCathMW(addMultipleAllergies));
  *     security:
  *       -bearerAuth: []
  *     summary: Returen the users'preferences
- *     tags: [Users]
+ *     tags: [Allergy]
  *     responses:
  *       200:
  *         description: success!
@@ -119,7 +119,7 @@ router.get('/preferences', validator, globalCathMW(getCurrentUserPreferences));
  *     security:
  *       -bearerAuth: []
  *     summary: Returen the users'allergies
- *     tags: [Users]
+ *     tags: [Preference]
  *     responses:
  *       200:
  *         description: success!
