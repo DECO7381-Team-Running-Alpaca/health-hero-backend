@@ -7,7 +7,6 @@ const {
   signUp,
   logIn,
   logOut,
-  generateMealPlan,
 } = require('../controllers/user');
 
 const validator = require('../middlewares/validator');
@@ -286,37 +285,5 @@ router.patch('/users/me', validator, globalCathMW(updateCurrentUser));
  *          description: UnAuthorized
  */
 router.delete('/users/me', validator, globalCathMW(deleteCurrentUser));
-
-/**
- * @swagger
- * /users/meal:
- *   post:
- *     security:
- *       -bearerAuth: []
- *     summary: generate a plan
- *     tags: [Meal]
- *     parameters:
- *       - in: user
- *         name: food
- *         required: true
- *         schema:
- *           type: arrary
- *           minimum: 2
- *         description: The food should be added into current user
- *     responses:
- *       200:
- *         description: success!
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
- *       400:
- *          description: Bad Request
- *       401:
- *          description: UnAuthorized
- */
-router.get('/users/meal', validator, generateMealPlan);
 
 module.exports = router;
