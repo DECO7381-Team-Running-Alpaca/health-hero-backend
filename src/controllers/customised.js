@@ -313,8 +313,17 @@ const getDailyMealData = async (req, res) => {
   const userMealPlan = req.user.current_plan;
   const { date } = req.body;
   let meals;
+  let randomMode;
+  if (req.body.mode === 'lw') {
+    randomMode = 'lw';
+  } else {
+    randomMode = 'r';
+  }
   const randomCalories = () => {
-    return Math.round(Math.random() * 200) + 500;
+    if (randomMode === 'lw') {
+      return Math.round(Math.random() * 300) + 300;
+    }
+    return Math.round(Math.random() * 500) + 300;
   };
 
   switch (date) {
