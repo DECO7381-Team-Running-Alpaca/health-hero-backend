@@ -8,22 +8,17 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const response = require('../utils/resFormatter');
-const randomFoodSearch = require('../utils/randomFoodTitle');
-const prefFoodSearch = require('../utils/preferenceFoodTitle');
-const foodInformation = require('../utils/recipeInformation');
 
 // Sign Up
 const signUp = async (req, res) => {
-  const user = new User(req.body);
+  let user = new User(req.body);
 
   const existUser = await User.findOne({ user_name: user.user_name });
   if (existUser) {
     return response(res, 400, 'User already exists');
   }
 
-  bcrypt.hash(user.password, 10, (err, hash) => {
-    user.password = hash;
-  });
+  user = await user.hashPassword();
 
   const token = await user.generateAuthToken();
   user.save();
