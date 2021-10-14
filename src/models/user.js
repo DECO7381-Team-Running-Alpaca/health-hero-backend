@@ -92,6 +92,15 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
+userSchema.methods.hashPassword = async function () {
+  const user = this;
+  bcrypt.hash(user.password, 10, (err, hash) => {
+    user.password = hash;
+  });
+  await user.save();
+  return user;
+};
+
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_KEY, {
