@@ -8,6 +8,9 @@
 /* eslint-disable consistent-return */
 const User = require('../models/user');
 const response = require('../utils/resFormatter');
+const randomFoodSearch = require('../utils/randomFoodTitle');
+const prefFoodSearch = require('../utils/preferenceFoodTitle');
+const foodInformation = require('../utils/recipeInformation');
 
 // add multiple preferences
 const addMultiplePreference = async (req, res) => {
