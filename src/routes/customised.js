@@ -178,10 +178,10 @@ router.post('/meal', validator, globalCathMW(generateMealPlan));
 
 router.get('/meal/all', validator, globalCathMW(getAllMeals));
 
-router.get('/meal/date', validator, globalCathMW(getDailyMealPlan));
+router.post('/meal/date', validator, globalCathMW(getDailyMealPlan));
 
-router.get('/meal/data', validator, globalCathMW(getDailyMealData));
+router.post('/meal/data', validator, globalCathMW(getDailyMealData));
 
-router.get('/meal/twodays', validator, globalCathMW(getTodayAndTomorrow));
+router.post('/meal/twodays', validator, globalCathMW(getTodayAndTomorrow));
 
 module.exports = router;
