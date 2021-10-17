@@ -412,7 +412,6 @@ const getDailyMealData = async (req, res) => {
 const getTodayAndTomorrow = async (req, res) => {
   const userMealPlan = req.user.current_plan;
   const { date } = req.body;
-  let meals;
   const generateInfo = (checker) => {
     const iDate = (parseInt(checker, 10) - 1) * 3;
     const tDate = iDate === 18 ? 0 : iDate + 3;
@@ -438,207 +437,34 @@ const getTodayAndTomorrow = async (req, res) => {
     ];
   };
 
-  switch (date) {
-    case '1':
-      const result = generateInfo(date);
-      meals = {
-        todayBreakfast: {
-          title: result[0][0],
-          image: result[0][1],
-        },
-        todayLunch: {
-          title: result[1][0],
-          image: result[1][1],
-        },
-        todayDinner: {
-          title: result[2][0],
-          image: result[2][1],
-        },
-        tomorrorBreakfast: {
-          title: result[3][0],
-          image: result[3][1],
-        },
-        tomorrowLunch: {
-          title: result[4][0],
-          image: result[4][1],
-        },
-        tomorrowDinner: {
-          title: result[5][0],
-          image: result[5][1],
-        },
-      };
-      break;
-    case '2':
-      meals = {
-        todayBreakfast: {
-          title: result[0][0],
-          image: result[0][1],
-        },
-        todayLunch: {
-          title: result[1][0],
-          image: result[1][1],
-        },
-        todayDinner: {
-          title: result[2][0],
-          image: result[2][1],
-        },
-        tomorrorBreakfast: {
-          title: result[3][0],
-          image: result[3][1],
-        },
-        tomorrowLunch: {
-          title: result[4][0],
-          image: result[4][1],
-        },
-        tomorrowDinner: {
-          title: result[5][0],
-          image: result[5][1],
-        },
-      };
-      break;
-    case '3':
-      meals = {
-        todayBreakfast: {
-          title: result[0][0],
-          image: result[0][1],
-        },
-        todayLunch: {
-          title: result[1][0],
-          image: result[1][1],
-        },
-        todayDinner: {
-          title: result[2][0],
-          image: result[2][1],
-        },
-        tomorrorBreakfast: {
-          title: result[3][0],
-          image: result[3][1],
-        },
-        tomorrowLunch: {
-          title: result[4][0],
-          image: result[4][1],
-        },
-        tomorrowDinner: {
-          title: result[5][0],
-          image: result[5][1],
-        },
-      };
-      break;
-    case '4':
-      meals = {
-        todayBreakfast: {
-          title: result[0][0],
-          image: result[0][1],
-        },
-        todayLunch: {
-          title: result[1][0],
-          image: result[1][1],
-        },
-        todayDinner: {
-          title: result[2][0],
-          image: result[2][1],
-        },
-        tomorrorBreakfast: {
-          title: result[3][0],
-          image: result[3][1],
-        },
-        tomorrowLunch: {
-          title: result[4][0],
-          image: result[4][1],
-        },
-        tomorrowDinner: {
-          title: result[5][0],
-          image: result[5][1],
-        },
-      };
-      break;
-    case '5':
-      meals = {
-        todayBreakfast: {
-          title: result[0][0],
-          image: result[0][1],
-        },
-        todayLunch: {
-          title: result[1][0],
-          image: result[1][1],
-        },
-        todayDinner: {
-          title: result[2][0],
-          image: result[2][1],
-        },
-        tomorrorBreakfast: {
-          title: result[3][0],
-          image: result[3][1],
-        },
-        tomorrowLunch: {
-          title: result[4][0],
-          image: result[4][1],
-        },
-        tomorrowDinner: {
-          title: result[5][0],
-          image: result[5][1],
-        },
-      };
-      break;
-    case '6':
-      meals = {
-        todayBreakfast: {
-          title: result[0][0],
-          image: result[0][1],
-        },
-        todayLunch: {
-          title: result[1][0],
-          image: result[1][1],
-        },
-        todayDinner: {
-          title: result[2][0],
-          image: result[2][1],
-        },
-        tomorrorBreakfast: {
-          title: result[3][0],
-          image: result[3][1],
-        },
-        tomorrowLunch: {
-          title: result[4][0],
-          image: result[4][1],
-        },
-        tomorrowDinner: {
-          title: result[5][0],
-          image: result[5][1],
-        },
-      };
-      break;
-    case '7':
-      meals = {
-        todayBreakfast: {
-          title: result[0][0],
-          image: result[0][1],
-        },
-        todayLunch: {
-          title: result[1][0],
-          image: result[1][1],
-        },
-        todayDinner: {
-          title: result[2][0],
-          image: result[2][1],
-        },
-        tomorrorBreakfast: {
-          title: result[3][0],
-          image: result[3][1],
-        },
-        tomorrowLunch: {
-          title: result[4][0],
-          image: result[4][1],
-        },
-        tomorrowDinner: {
-          title: result[5][0],
-          image: result[5][1],
-        },
-      };
-      break;
-    default:
-      return response(res, 400, 'Wrong body format.');
-  }
+  const result = generateInfo(date);
+  const meals = {
+    todayBreakfast: {
+      title: result[0][0],
+      image: result[0][1],
+    },
+    todayLunch: {
+      title: result[1][0],
+      image: result[1][1],
+    },
+    todayDinner: {
+      title: result[2][0],
+      image: result[2][1],
+    },
+    tomorrorBreakfast: {
+      title: result[3][0],
+      image: result[3][1],
+    },
+    tomorrowLunch: {
+      title: result[4][0],
+      image: result[4][1],
+    },
+    tomorrowDinner: {
+      title: result[5][0],
+      image: result[5][1],
+    },
+  };
+
   return response(res, 200, 'Daily plan got.', {
     plan: meals,
   });
