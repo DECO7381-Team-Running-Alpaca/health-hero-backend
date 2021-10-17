@@ -11,7 +11,7 @@ const shuffleArray = (arr) => {
 const axios = require('axios').default;
 
 const prefFoodSearch = async (query) => {
-  const apiKey = '86b3a96f57c149df83551cd3a481adcc';
+  const apiKey = process.env.API_KEY;
   const url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${encodeURIComponent(
     apiKey
   )}&query=${encodeURIComponent(query)}&number=${20}`;

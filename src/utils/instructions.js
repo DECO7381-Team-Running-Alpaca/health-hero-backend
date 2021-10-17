@@ -1,17 +1,182 @@
-const instruct1 = `<ol><li>Heat a deep pot over medium heat. Add oil and butter. When butter is melted, add potatoes, celery, onion, bay leaves and chipotle peppers to the pot. Season vegetables with salt and pepper, mix well and saute until tender, about 10 minutes.</li><li>Sprinkle in flour and cook about 2 minutes, stirring constantly. Stir in clam juice and half and half and mix well.</li><li>Bring soup up to a simmer and continue to simmer for about 20 minutes, or until potatoes are soft.</li><li>Stir in corn, crab and sherry and simmer for another 5 minutes, until heated through.</li><li>Adjust the soup seasonings and remove the bay leaf.  Ladle soup into bowls and top with a few dashes of hot sauce, if desired.</li><li>Serve with some crackers, crusty bread or cornbread.</li></ol>`;
-const instruct2 = `In a large saucepan, add the milk, cream and mint. Bring the mixture to a simmer over med-low heat and then turn the heat off. Let the mixture steep for 20 minutes at room temperature.\nStrain the mixture through a fine mesh sieve into a bowl and return to the saucepan. Add 3/4 cup of the sugar and bring to a simmer, whisking occasionally to dissolve the sugar.\nIn a medium bowl, whisk the remaining sugar and egg yolks until the mixture is slightly thickened and light in color. Slowly, add 1/4 cup of the milk mixture to the eggs while whisking constantly. Continue adding the milk to the egg mixture 1/4 cup at a time until all the ingredients are combined.\nPrepare and ice bath in a large bowl and place a medium bowl in the ice bath. Place a fine mesh stainer over the bowl.\nTransfer the cream mixture to a large saucepan and cook over medium heat, stirring constantly and scraping the bottom and sides with a heatproof spatula until the custard thickens enough to coat the back of a spoon. Strain the custard into the bowl and allow to cool.\nRefrigerate the custard until cold or overnight.\nPour the custard into the freezer can of an electric ice cream maker and freeze according to the manufacturer's instructions. When the ice cream is the consistency of soft serve, add the chocolate chips and allow to blend. Transfer to an airtight storage container and freeze.`;
-const instruct3 = `<ol><li><span></span>Preheat oven to 350 degrees. Place a large skillet over medium heat; add two teaspoons of ghee or butter and let it melt. Sauté the shallots until they begin to lightly caramelize. Stir in the mushrooms, as well as some salt and pepper, and sauté until the mushrooms release their juices and turn golden brown.</li><li>Place a teaspoon of ghee in a pie plate or casserole dish; heat in the oven for about two minutes, or until the ghee is softened. Using a pastry brush, spread the melted ghee all around the inside of the baking dish. Add the mushroom and shallot mixture, then top with the crumbled goat cheese.</li><li>Using the back of a spoon, make four indentations in the mushroom mixture. Carefully crack an egg into each indentation. Top with salt, pepper, and herbes de Provence.</li><li>Bake for 18 to 23 minutes or until desired doneness. The whites should be cooked through but the yolks still soft. While the eggs are baking, toast the bread. Gently rub the toast with the cut side of the garlic clove until the bread is fragrant.</li><li>Remove the eggs from the oven. Top with fresh herbs or greens (I used baby arugula, but chopped chives would be fabulous, too) and serve with toast.</li></ol>`;
-const instruct4 = `Bring the potatoes to a boil in a large pot of water. Reduce the heat to medium and cook until they are fork tender  about 10 to 12 minutes. Do not overcook. Drain well and let cool for 10 minutes or longer before transferring to a large bowl along with the peas, basil leaves and olives if using.To make the dressing, combine all the ingredients in a small blender or food processor and pulse into smooth. If it is too thick, add a bit more olive oil or almond milk. Taste for seasoning and adjust nutritional yeast, salt and pepper to taste. Toss the potatoes with the dressing and serve.`;
-const instruct5 = `<p>Toast the dried coconut in a dry unoiled skillet or saucepan over medium-low heat, stirring or tossing frequently, for 8 to 10 minutes or until lightly browned.Combine the flour, coconut sugar, baking powder, baking soda and salt in a large mixing bowl. In a separate bowl, whisk together the almond milk, coconut oil, eggs and vanilla. Pour the milk and egg mixture into the dry ingredients and stir just until combined  do not overmix.Grease a non-stick skillet with coconut oil and heat over medium heat. When hot, add 1/3 cup of the pancake batter to the pan and scatter 1 tablespoon of the toasted coconut on top. Cook for 2 minutes or until browned on the bottom, then flip and cook for 1 more minute or until both sides are browned and the pancake is cooked throughout. Remove and continue cooking until the batter is used up.To make the sauce, combine 1 cup of the toasted coconut with the coconut milk and coconut sugar and bring to a boil. Reduce heat to medium-low and simmer, stirring frequently, for 20 minutes or until the sauce is thick. Remove from heat and let cool slightly. If desired, pour the sauce into a blender and process until smooth.*Notes: Use white sugar if you want a white sauce. The sauce can be made ahead of time and refrigerated  simply add a little water and reheat before serving.</p>`;
-const instruct6 = `<ol><li>Place chopped thyme, lemon juice and zest and garlic in a glass bowl. Microwave on high heat for 30 seconds then let the herbs seep in the warm olive oil while you prepare the artichokes.</li><li>Prepare a large pot with an inch of water at the bottom and a steamer rack. Prepare the artichokes. Have lemon wedges ready. If you want a nice presentation, use scissors to snip away the pointy tips of the artichoke leaves. As you trim the artichokes, rub the cut areas with juice from the lemon wedges to prevent the artichokes from turning brown. Use a vegetable peeler to cut away the thick outer layer of the artichoke stems. Trim the stems to 2 inches from the base of the artichoke. Cut off and discard the top 1/2 inch of the artichokes. Cut the artichokes in half. Use a strong metal spoon to scoop out the fuzzy chokes and the small inner artichoke leaves. Rub lemon juice all over the inside and exposed cut areas of the artichokes.</li><li>Heat the water in the large pot with a steamer rack on high. When it comes to a boil, reduce the heat to medium high and place the artichoke halves, cut side down on the steam rack. Cover. Steam for 20 minutes or until you can easily pull off the outer leaves, and you can pierce the heart easily with a knife. The artichokes can be just a tiny bit less cooked than would be typically perfect for steamed artichokes, as you will be cooking them further on the grill.</li><li>Prepare your grill for direct, high heat. Toss the artichokes in the garlic, lemon and thyme infused oil coating liberally. Sprinkle artichokes with salt and pepper. Place the artichoke halves cut-side-down on the grill grates. Cover, and grill for 5 to 10 minutes, until you have nice grill mark on the cut sides of the artichokes.</li></ol>`;
-const instruct7 = `Cut the pumpkin into large chunks, and place on a parchment or foil-lined baking sheet. Drizzle with oil and roast at 200C until fork-tender and golden.\nIn a blender mash the roasted pumpkin until smooth. Transfer into a soup pot.\nAdd cream, sour cream, wine and vegetable stock, stir and combine.\nBring the soup to a boil, then immediately remove from the flame.\nSprinkle with chopped fresh sage leaves serve with croutons`;
+const subInstruct1 = {
+  title: 'Pork schnitzel with tarragon cream sauce',
+  ingredients: [
+    'black pepper',
+    'breadcrumbs',
+    'cornflour',
+    'cornstarch',
+    'double cream',
+    'eggs',
+    'parmesan cheese',
+    'pork escalopes',
+    'sunflower oil',
+    'tarragon',
+    'vegetable stock',
+    'white wine',
+  ],
+  instructions:
+    '<ol><li>Using the side of a rolling pin or a meat tenderiser, gently beat the pork until flattened to a 0.5cm thickness.</li><li>Sprinkle the seasoned flour onto a plate. Beat the eggs in a bowl. Mix the breadcrumbs with the grated parmesan and sprinkle the mixture onto another plate.</li><li>Dredge each escalope lightly in the flour on both sides, shaking off any excess, then dip into the egg, then press into the breadcrumb mixture, to coat on both sides. Chill in the fridge for 20 minutes before cooking.</li><li>Heat the oil in a frying pan over a medium heat and fry the schnitzels for 2-3 minutes on each side, or until golden-brown on both sides and completely cooked through (there should be no trace of pink in the middle). Remove from the pan and set aside to drain on kitchen paper.</li><li>For the sauce, pour the wine into a small saucepan, add the tarragon sprig and bring to the boil. Continue to boil for 1-2 minutes, or until the volume of liquid has almost completely reduced.</li><li>Pour in the stock and return the mixture to the boil. Boil for 3-4 minutes, or until reduced in volume by half, then add the cream and simmer for 2-3 minutes until thickened. Season, to taste, with salt and freshly ground black pepper, then stir in the chopped tarragon.</li><li>To serve, place one pork schnitzel onto each of two plates and spoon over the sauce. Garnish with wedges of lemon and serve with your choice of vegetables on the side.</li></ol>',
+  sourceUrl:
+    'http://www.foodista.com/recipe/ZBY4H35V/pork-schnitzel-with-tarragon-cream-sauce',
+  image: 'https://spoonacular.com/recipeImages/656819-556x370.jpg',
+  nutrients: {
+    calories: 1169.81,
+    fat: 78.82,
+    saturatedFat: 30.36,
+    carbohydrates: 55.41,
+    netCarbohydrates: 53.21,
+    sugar: 3.92,
+    cholesterol: 302.95,
+  },
+};
+
+const subInstruct2 = {
+  title: 'Swiss Chard Wraps',
+  ingredients: [
+    'swiss chard',
+    'orange',
+    'olive oil',
+    'garlic',
+    'salt',
+    'fresh basil',
+    'zucchini',
+    'red bell pepper',
+    'avocado',
+    'peanut',
+  ],
+  instructions:
+    'Chop off the stems of the swiss chard at the point where it meets the leaf. You could stem the swiss chard entirely. I like leaving a bit of stem with the leaves to give better structure to the wraps.\nChop the cauliflower into small pieces and pulse them in a food processor until it looks like rice. I usually pulse the cauliflower florets and the stalk together.\nPlace the olive oil in a saut pan over medium-high heat. Once the pan is hot, add the garlic and let it fry for about a minute or two, or until the garlic starts to brown. Add the pulsed cauliflower rice and cook it for about 2-3 minutes. The cauliflower should turn into a vibrant yellow-orange color when it is cooked. Add a pinch of salt and chopped basil to the cauliflower and stir.\nSpiralize the zucchini with Blade B to create zucchini noodles. If you do not have a spiralizer, just create zucchini ribbons with a vegetable peeler.\nTo assemble the wraps, place a large leaf flat down. Add a bit of sauted cauliflower, zucchini noodles, red pepper, and avocado along the swiss chard stalk. Drizzle a bit of vinaigrette on top of the vegetables and wrap everything up.\nEnjoy these wraps as a side to your favorite protein! Feel free to dip these wraps in more sauce.\nThese wraps are best consumed when they are freshly made. Refrigerate any leftovers in an airtight container.',
+  sourceUrl: 'https://www.foodista.com/recipe/LHXZRNVW/swiss-chard-wraps',
+  image: 'https://spoonacular.com/recipeImages/662670-556x370.jpg',
+  nutrients: {
+    calories: 138.58,
+    fat: 11.18,
+    saturatedFat: 1.63,
+    carbohydrates: 8.63,
+    netCarbohydrates: 4.2,
+    sugar: 2.75,
+    cholesterol: 0,
+  },
+};
+
+const subInstruct3 = {
+  title: 'Beef With Oranges and Spices',
+  ingredients: [
+    'allspice',
+    'beef',
+    'cube beef bouillon',
+    'cumin',
+    'garlic',
+    'olive oil',
+    'oranges',
+    'parsley',
+    'saffron',
+    'salt and pepper',
+  ],
+  instructions:
+    '<ol><li>Peel and slice one orange. Squeeze juice from the other orange and set aside.</li><li>Heat olive oil in a casserole or Dutch oven. Add the diced meat and crushed garlic cloves. Saut until meat is nicely browned on all sides.</li><li>Add orange pieces and drizzle with orange juice.</li><li>Season with saffron, cumin, allspice, salt and pepper. Mix and cover. Reduce heat and simmer for 10 minutes.</li><li>Pour 300ml of beef bouillon over meat and cover again. Simmer over low heat until meat is thoroughly cooked and tender (about 1 hour). Add remaining amount of bouillon during cooking so the meat does not dry.</li><li>Sprinkle meat with chopped parsley. Serve immediately, with rice or couscous and a green salad.</li></ol>',
+  sourceUrl:
+    'http://www.foodista.com/recipe/YV5XGX8D/beef-with-oranges-and-spices',
+  image: 'https://spoonacular.com/recipeImages/634715-556x370.jpg',
+  nutrients: {
+    calories: 683.33,
+    fat: 42.16,
+    saturatedFat: 14.98,
+    carbohydrates: 26.88,
+    netCarbohydrates: 25.57,
+    sugar: 22.66,
+    cholesterol: 111.5,
+  },
+};
+
+const subInstruct4 = {
+  title: 'Dressed Up Kale Salad',
+  ingredients: [
+    'agave nectar',
+    'juice of lemon',
+    'kale',
+    'nutritional yeast',
+    'shallot',
+    'tahini',
+    'water',
+  ],
+  instructions:
+    'Remove the kale leaves from the stalk and tear into pieces. Rinse well and pat dry.In a large bowl, whisk together the nutritional yeast, tahini, lemon juice, sweetneer and shalot. Add water as necessary to thin to a thick but pourable consistency.Add the kale to the bowl and mix with your hands until everything is well blended. Sprinkle with seeds if desired, and serve.',
+  sourceUrl:
+    'http://foodandspice.blogspot.com/2016/06/dressed-up-kale-salad.html',
+  image: 'https://spoonacular.com/recipeImages/792072-556x370.jpg',
+  nutrients: {
+    calories: 62.98,
+    fat: 2.3,
+    saturatedFat: 0.3,
+    carbohydrates: 9.06,
+    netCarbohydrates: 7.94,
+    sugar: 4.35,
+    cholesterol: 0,
+  },
+};
+
+const subInstruct5 = {
+  title: 'Tomato and lentil soup',
+  ingredients: [
+    'olive oil',
+    'onion',
+    'garlic',
+    'carrots',
+    'canned tomatoes',
+    'bay leaf',
+    'water',
+    'lentils',
+    'salt',
+    'parsley',
+  ],
+  instructions:
+    'Saut onion and garlic in olive oil for 5 minutes.\nAdd the carrot, saut for another 2 minutes.\nAdd tomatoes, bay leaf and water, stir and bring to the boil.\nStir in lentils, season with salt and cook for 5 minutes.\nBefore serving sprinkle with chopped parsley.',
+  sourceUrl: 'https://www.foodista.com/recipe/5V4PTMT2/tomato-and-lentil-soup',
+  image: 'https://spoonacular.com/recipeImages/663559-556x370.jpg',
+  nutrients: {
+    calories: 358.11,
+    fat: 8.26,
+    saturatedFat: 1.16,
+    carbohydrates: 54.67,
+    netCarbohydrates: 31.07,
+    sugar: 10.02,
+    cholesterol: 0,
+  },
+};
+
+const subInstruct6 = {
+  title: 'Spinach and Gorgonzola Stuffed Flank Steak',
+  ingredients: [
+    'flank steak',
+    'olive oil',
+    'shallot',
+    'spinach',
+    'bread crumbs',
+    'gorgonzola',
+    'salt and pepper',
+  ],
+  instructions:
+    'Preheat oven to 375.\nButterfly the steak by using a long sharp knife holding it parallel to the work surface, cut through the long side of the steak, stopping about  inch from the opposite side. If the steak is already thin, just pound it with a mallet to  inch thick.\nIn a large skillet over medium heat add 1 tablespoon olive oil and saut` the shallots until soft, 2 minutes. Add the spinach and cook until just wilted, about 2 to 3 minutes. Transfer to a colander.\nWhen cool enough to handle, squeeze out all the moisture from the spinach and transfer to a medium bowl. Stir in the bread crumbs and cheese. Season with salt and pepper.\nPlace the steak on a sheet of plastic wrap. Smear the spinach mixture evenly over the steak, leaving about 1 inch border along the side edge. Beginning with the side near you and using the plastic wrap as an aid, rollup the steak, gently pressing on the filling.\nTie the rolled steak with twine at 2-3 inch interval.\nSeason the outside with salt and pepper.\nHeat the remaining 2 tablespoons olive oil in a large ovenproof skillet over medium high heat. Sear the roast on all sided, about 2 minutes per side.\nPlace in the oven and roast for 20 to 25 minutes.\nTransfer to a cutting board, tend with aluminum foil and allow resting for 10 minutes.\nTo serve, remove the twine from the roast and cut into  inch to 1 inch thick slices.',
+  sourceUrl:
+    'https://www.foodista.com/recipe/SWTFLZXM/spinach-and-gorgonzola-stuffed-flank-steak',
+  image: 'https://spoonacular.com/recipeImages/661259-556x370.jpg',
+  nutrients: {
+    calories: 523.46,
+    fat: 28.45,
+    saturatedFat: 10.55,
+    carbohydrates: 18.35,
+    netCarbohydrates: 15.99,
+    sugar: 2.13,
+    cholesterol: 123.32,
+  },
+};
 
 module.exports = {
-  instruct1,
-  instruct2,
-  instruct3,
-  instruct4,
-  instruct5,
-  instruct6,
-  instruct7,
+  subInstruct1,
+  subInstruct2,
+  subInstruct3,
+  subInstruct4,
+  subInstruct5,
+  subInstruct6,
 };

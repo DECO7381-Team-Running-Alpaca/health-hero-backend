@@ -5,6 +5,7 @@ const swaggerJsDoc = require('swagger-jsdoc');
 
 const userRouter = require('./routes/user');
 const customisedRouter = require('./routes/customised');
+const mealRouter = require('./routes/meal');
 const errorHandler = require('./middlewares/errorHandler');
 const { connectToDB } = require('./utils/mongoose');
 
@@ -74,6 +75,7 @@ app.use(errorHandler);
 
 app.use(userRouter);
 app.use(customisedRouter);
+app.use(mealRouter);
 
 connectToDB()
   .then(() => {
