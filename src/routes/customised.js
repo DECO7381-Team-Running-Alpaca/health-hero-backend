@@ -5,11 +5,6 @@ const {
   addMultipleAllergies,
   getCurrentUserPreferences,
   getCurrentUserAllergies,
-  generateMealPlan,
-  getAllMeals,
-  getDailyMealPlan,
-  getDailyMealData,
-  getTodayAndTomorrow,
 } = require('../controllers/customised');
 
 const validator = require('../middlewares/validator');
@@ -143,45 +138,5 @@ router.get('/preferences', validator, globalCathMW(getCurrentUserPreferences));
  */
 // Get current user's allergies
 router.get('/allergies', validator, globalCathMW(getCurrentUserAllergies));
-
-/**
- * @swagger
- * /users/meal:
- *   post:
- *     security:
- *       -bearerAuth: []
- *     summary: generate a plan
- *     tags: [Meal]
- *     parameters:
- *       - in: user
- *         name: food
- *         required: true
- *         schema:
- *           type: arrary
- *           minimum: 2
- *         description: The food should be added into current user
- *     responses:
- *       200:
- *         description: success!
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
- *       400:
- *          description: Bad Request
- *       401:
- *          description: UnAuthorized
- */
-router.post('/meal', validator, globalCathMW(generateMealPlan));
-
-router.get('/meal/all', validator, globalCathMW(getAllMeals));
-
-router.post('/meal/date', validator, globalCathMW(getDailyMealPlan));
-
-router.post('/meal/data', validator, globalCathMW(getDailyMealData));
-
-router.post('/meal/twodays', validator, globalCathMW(getTodayAndTomorrow));
 
 module.exports = router;
