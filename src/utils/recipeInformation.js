@@ -29,16 +29,18 @@ const foodInformation = async (id) => {
       netCarbohydrates: nutrition.nutrients[4].amount,
       sugar: nutrition.nutrients[5].amount,
       cholesterol: nutrition.nutrients[6].amount,
+      protein: nutrition.nutrients[9].amount,
     };
 
-    // // 1: chrome/postman
-    // const videoUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
-    //   title
-    // )}&key=${encodeURIComponent(process.env.VIDEO_KEY)}`;
-    // const videoResponse = await axios.get(videoUrl);
-    // console.log(videoResponse);
-    // // 2. destruct
-    // const { videoId } = videoResponse.items[0].id;
+    const videoUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${title}&key=${process.env.YOUTUBE_KEY}`;
+    const videoId = await axios
+      .get(videoUrl)
+      .then((rawData) => {
+        const youtubeId = rawData.data.items[0].id.videoId;
+
+        return youtubeId;
+      })
+      .catch((e) => console.log(e));
 
     return {
       title,
@@ -47,7 +49,7 @@ const foodInformation = async (id) => {
       sourceUrl,
       image,
       nutrients,
-      // videoId,
+      videoId,
     };
   } catch (error) {
     return error;
