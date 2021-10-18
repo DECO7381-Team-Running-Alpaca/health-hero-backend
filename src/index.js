@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
-const cors = require('cors');
 
 const userRouter = require('./routes/user');
 const customisedRouter = require('./routes/customised');
@@ -14,7 +13,6 @@ const validator = require('./middlewares/validator');
 const response = require('./utils/resFormatter');
 
 const app = express();
-app.use(cors);
 const port = process.env.PORT || 3030;
 
 // Init Swagger API document
