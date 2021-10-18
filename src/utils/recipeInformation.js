@@ -31,14 +31,14 @@ const foodInformation = async (id) => {
       cholesterol: nutrition.nutrients[6].amount,
     };
 
-    // 1: chrome/postman
-    const videoUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
-      title
-    )}&key=${encodeURIComponent(process.env.VIDEO_KEY)}`;
-    const videoResponse = await axios.get(videoUrl);
-    console.log(videoResponse);
-    // 2. destruct
-    const { videoId } = videoResponse.items[0].id;
+    // // 1: chrome/postman
+    // const videoUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
+    //   title
+    // )}&key=${encodeURIComponent(process.env.VIDEO_KEY)}`;
+    // const videoResponse = await axios.get(videoUrl);
+    // console.log(videoResponse);
+    // // 2. destruct
+    // const { videoId } = videoResponse.items[0].id;
 
     return {
       title,
@@ -47,7 +47,7 @@ const foodInformation = async (id) => {
       sourceUrl,
       image,
       nutrients,
-      videoId,
+      // videoId,
     };
   } catch (error) {
     return error;
