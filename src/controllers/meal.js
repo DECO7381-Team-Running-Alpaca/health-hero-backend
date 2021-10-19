@@ -394,7 +394,7 @@ const getTodayAndTomorrow = async (req, res) => {
   });
 };
 
-const num = Math.floor(Math.random() * 5) + 1;
+const num = Math.floor(Math.random() * 6) + 1;
 const RandomMeal = [
   instruction.subInstruct1,
   instruction.subInstruct2,
