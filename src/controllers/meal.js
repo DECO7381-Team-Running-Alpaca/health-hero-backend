@@ -3,7 +3,7 @@ const response = require('../utils/resFormatter');
 const randomFoodSearch = require('../utils/randomFoodTitle');
 const prefFoodSearch = require('../utils/preferenceFoodTitle');
 const foodInformation = require('../utils/recipeInformation');
-
+const instruction = require('../utils/instructions');
 // Generate weekly meal plan
 const generateMealPlan = async (req, res) => {
   const shuffleArray = (arr) => {
@@ -394,10 +394,25 @@ const getTodayAndTomorrow = async (req, res) => {
   });
 };
 
+const num = Math.floor(Math.random() * 6) + 1;
+const RandomMeal = [
+  instruction.subInstruct1,
+  instruction.subInstruct2,
+  instruction.subInstruct3,
+  instruction.subInstruct4,
+  instruction.subInstruct5,
+  instruction.subInstruct6,
+];
+// returen a random meal
+const getRandomMeal = async (req, res) => {
+  return response(res, 200, 'Random Meal got.', RandomMeal[num]);
+};
+
 module.exports = {
   generateMealPlan,
   getDailyMealData,
   getDailyMealPlan,
   getAllMeals,
   getTodayAndTomorrow,
+  getRandomMeal,
 };

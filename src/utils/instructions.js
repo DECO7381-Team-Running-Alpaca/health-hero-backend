@@ -27,7 +27,9 @@ const subInstruct1 = {
     netCarbohydrates: 53.21,
     sugar: 3.92,
     cholesterol: 302.95,
+    protein: 29.88,
   },
+  videoId: '-YO63Wnz_Vo',
 };
 
 const subInstruct2 = {
@@ -56,7 +58,9 @@ const subInstruct2 = {
     netCarbohydrates: 4.2,
     sugar: 2.75,
     cholesterol: 0,
+    protein: 15.96,
   },
+  videoId: '-YO63Wnz_Vo',
 };
 
 const subInstruct3 = {
@@ -86,7 +90,9 @@ const subInstruct3 = {
     netCarbohydrates: 25.57,
     sugar: 22.66,
     cholesterol: 111.5,
+    protein: 33.72,
   },
+  videoId: '-YO63Wnz_Vo',
 };
 
 const subInstruct4 = {
@@ -113,7 +119,9 @@ const subInstruct4 = {
     netCarbohydrates: 7.94,
     sugar: 4.35,
     cholesterol: 0,
+    protein: 11.98,
   },
+  videoId: '-YO63Wnz_Vo',
 };
 
 const subInstruct5 = {
@@ -142,7 +150,9 @@ const subInstruct5 = {
     netCarbohydrates: 31.07,
     sugar: 10.02,
     cholesterol: 0,
+    protein: 27.88,
   },
+  videoId: '-YO63Wnz_Vo',
 };
 
 const subInstruct6 = {
@@ -169,7 +179,9 @@ const subInstruct6 = {
     netCarbohydrates: 15.99,
     sugar: 2.13,
     cholesterol: 123.32,
+    protein: 18.23,
   },
+  videoId: '-YO63Wnz_Vo',
 };
 
 module.exports = {

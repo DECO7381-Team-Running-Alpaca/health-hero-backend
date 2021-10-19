@@ -6,6 +6,7 @@ const {
   getDailyMealPlan,
   getDailyMealData,
   getTodayAndTomorrow,
+  getRandomMeal,
 } = require('../controllers/meal');
 
 const validator = require('../middlewares/validator');
@@ -176,4 +177,5 @@ router.post('/meal/data', validator, globalCathMW(getDailyMealData));
  */
 router.post('/meal/twodays', validator, globalCathMW(getTodayAndTomorrow));
 
+router.get('/meal/get', getRandomMeal);
 module.exports = router;
