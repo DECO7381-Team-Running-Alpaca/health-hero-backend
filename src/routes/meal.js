@@ -177,5 +177,5 @@ router.post('/meal/data', validator, globalCathMW(getDailyMealData));
  */
 router.post('/meal/twodays', validator, globalCathMW(getTodayAndTomorrow));
 
-router.get('/meal/get', getRandomMeal);
+router.get('/meal/random', getRandomMeal);
 module.exports = router;

@@ -394,17 +394,18 @@ const getTodayAndTomorrow = async (req, res) => {
   });
 };
 
-const num = Math.floor(Math.random() * 6) + 1;
-const RandomMeal = [
-  instruction.subInstruct1,
-  instruction.subInstruct2,
-  instruction.subInstruct3,
-  instruction.subInstruct4,
-  instruction.subInstruct5,
-  instruction.subInstruct6,
-];
 // returen a random meal
 const getRandomMeal = async (req, res) => {
+  const num = Math.floor(Math.random() * 6);
+  const RandomMeal = [
+    instruction.subInstruct1,
+    instruction.subInstruct2,
+    instruction.subInstruct3,
+    instruction.subInstruct4,
+    instruction.subInstruct5,
+    instruction.subInstruct6,
+  ];
+
   return response(res, 200, 'Random Meal got.', RandomMeal[num]);
 };
 
