@@ -33,7 +33,7 @@ const foodInformation = async (id) => {
     };
 
     const videoUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${title}&key=${process.env.YOUTUBE_KEY}`;
-    const videoId = await axios
+    let videoId = await axios
       .get(videoUrl)
       .then((rawData) => {
         const youtubeId = rawData.data.items[0].id.videoId;
@@ -41,6 +41,10 @@ const foodInformation = async (id) => {
         return youtubeId;
       })
       .catch((e) => console.log(e));
+
+    if (videoId == null) {
+      videoId = 'dQw4w9WgXcQ';
+    }
 
     return {
       title,
