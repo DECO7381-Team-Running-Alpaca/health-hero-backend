@@ -25,6 +25,18 @@ const globalCathMW = (controller) => (req, res, next) => {
  *       -bearerAuth: []
  *     summary: generate a plan
  *     tags: [Meal]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *           examples:
+ * 
+ *             meal:
+ *                summary: meal
+ *                value:
+ *                  preference: [a,b,c,d]
  *     parameters:
  *       - in: user
  *         name: food
@@ -57,6 +69,18 @@ router.post('/meal', validator, globalCathMW(generateMealPlan));
  *       -bearerAuth: []
  *     summary: getAllMeals
  *     tags: [Meal]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *           examples:
+ * 
+ *             meal:
+ *                summary: meal
+ *                value:
+ *                  date: [1,2,3,4,5,6,7]
  *     parameters:
  *       - in: user
  *         name: food
@@ -89,6 +113,18 @@ router.get('/meal/all', validator, globalCathMW(getAllMeals));
  *       -bearerAuth: []
  *     summary: getDailyMealPlan
  *     tags: [Meal]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *           examples:
+ * 
+ *             meal:
+ *                summary: meal
+ *                value:
+ *                  date: [1]
  *     parameters:
  *       - in: user
  *         name: food
@@ -121,6 +157,18 @@ router.post('/meal/date', validator, globalCathMW(getDailyMealPlan));
  *       -bearerAuth: []
  *     summary: getDailyMealData
  *     tags: [Meal]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *           examples:
+ * 
+ *             meal:
+ *                summary: meal
+ *                value:
+ *                  date: [1]
  *     parameters:
  *       - in: user
  *         name: food
@@ -153,6 +201,18 @@ router.post('/meal/data', validator, globalCathMW(getDailyMealData));
  *       -bearerAuth: []
  *     summary: getTodayAndTomorrow
  *     tags: [Meal]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *           examples:
+ * 
+ *             meal:
+ *                summary: meal
+ *                value:
+ *                  date: [1]
  *     parameters:
  *       - in: user
  *         name: food
@@ -176,6 +236,36 @@ router.post('/meal/data', validator, globalCathMW(getDailyMealData));
  *          description: UnAuthorized
  */
 router.post('/meal/twodays', validator, globalCathMW(getTodayAndTomorrow));
-
+/**
+ * @swagger
+ * /meal/random:
+ *   get:
+ *     security:
+ *       -bearerAuth: []
+ *     summary: get random meal plan
+ *     tags: [Meal]
+ *     requestBody:
+ *     parameters:
+ *       - in: user
+ *         name: food
+ *         required: true
+ *         schema:
+ *           type: arrary
+ *           minimum: 2
+ *         description: The food should be added into current user
+ *     responses:
+ *       200:
+ *         description: success!
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       400:
+ *          description: Bad Request
+ *       401:
+ *          description: UnAuthorized
+ */
 router.get('/meal/random', getRandomMeal);
 module.exports = router;

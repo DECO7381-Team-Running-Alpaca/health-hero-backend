@@ -23,6 +23,19 @@ const globalCathMW = (controller) => (req, res, next) => {
  *       -bearerAuth: []
  *     summary: Add multiple preferences
  *     tags: [Preference]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *           examples:
+ * 
+ *             user:
+ *                summary: user
+ *                value:
+ *                  _id: sdasdasdadwqfsa
+ *                  preference: [a,b,c]
  *     parameters:
  *       - in: user
  *         name: preferences
@@ -66,6 +79,20 @@ router.patch('/preferences', validator, globalCathMW(addMultiplePreference));
  *           type: arrary
  *           minimum: 2
  *         description: The allergies should be added into current user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *           examples:
+ * 
+ *             user:
+ *                summary: user
+ *                value:
+ *                  _id: sdasdasdadwqfsa
+ *                  allergy: [a,b,c]
+ *
  *     responses:
  *       200:
  *         description: success!
@@ -92,7 +119,7 @@ router.patch('/allergies', validator, globalCathMW(addMultipleAllergies));
  *     security:
  *       -bearerAuth: []
  *     summary: Returen the users'preferences
- *     tags: [Allergy]
+ *     tags: [Preference]
  *     responses:
  *       200:
  *         description: success!
@@ -119,7 +146,7 @@ router.get('/preferences', validator, globalCathMW(getCurrentUserPreferences));
  *     security:
  *       -bearerAuth: []
  *     summary: Returen the users'allergies
- *     tags: [Preference]
+ *     tags: [Allergy]
  *     responses:
  *       200:
  *         description: success!
