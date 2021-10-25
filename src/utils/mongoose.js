@@ -6,6 +6,7 @@ exports.connectToDB = () => {
   console.log(`Connecting to ${DBurl}`);
 
   return mongoose.connect(DBurl, {
+    autoIndex: false,
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
