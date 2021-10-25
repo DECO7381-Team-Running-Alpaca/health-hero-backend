@@ -113,6 +113,23 @@ const globalCathMW = (controller) => (req, res, next) => {
  *       -bearerAuth: []
  *     summary: Sign up
  *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *           examples:
+ * 
+ *             user:
+ *                summary: user
+ *                value:
+ *                  user_name: 123qwe
+ *                  password: 123qw!A
+ *                  email: e@e.com
+ *                  weight: 31
+ *                  height: 156
+ *
  *     responses:
  *       200:
  *         description: success!
@@ -139,6 +156,19 @@ router.post('/users', globalCathMW(signUp));
  *       -bearerAuth: []
  *     summary: Log in
  *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *           examples:
+ * 
+ *             user:
+ *                summary: user
+ *                value:
+ *                  user_name: 123qwe
+ *                  password: 123qw!A
  *     responses:
  *       200:
  *         description: success!
@@ -165,6 +195,19 @@ router.post('/users/login', globalCathMW(logIn));
  *       -bearerAuth: []
  *     summary: Log out
  *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *           examples:
+ * 
+ *             user:
+ *                summary: user
+ *                value:
+ *                  user_name: 123qwe
+ *                  password: 123qw!A
  *     responses:
  *       200:
  *         description: success!
@@ -217,6 +260,20 @@ router.get('/users/me', validator, globalCathMW(getCurrentUser));
  *       -bearerAuth: []
  *     summary: Update the users
  *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *           examples:
+ * 
+ *             user:
+ *                summary: user
+ *                value:
+ *                  password: 123qw!A
+ *                  height: 176
+ *                  weight: 55
  *     parameters:
  *       - in: user
  *         name: password
