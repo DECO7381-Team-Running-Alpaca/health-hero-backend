@@ -1,151 +1,78 @@
-#RESTful API
+# Health-Hero Backend API
 
-**Endpoints:**
+Backend server for DECO7381 developed by Team Running Alpaca
 
-### User
+## Deployment
 
-_Sign up_
-**Post '/users'**
-body: {
-"user_name": String,
-"password": String,
-"email": String,
-"weight": Number,
-"height": Number
-}
+### 1. Deploy Platform
 
-_Log in_
-**POST '/users/login'**
-body: {
-user_name: String,
-password: String
-}
+The server has been deployed on [Heroku](https://dashboard.heroku.com/apps).
 
-_Log out current token_
-**POST '/users/logout'**
-Logged in required
+- It may sleep after long time inactive, please wait 5 - 10 second for the server to awake.
 
-_Log out all tokens_
-**POST '/users/logout_all'**
-Logged in required
+### 2. Essential URL
 
-_GET ALL USERS (DEV.)_
-**GET '/users/all'**
+https://health-hero-team-ra.herokuapp.com/
 
-_Get current user_
-**GET '/users/me'**
-Logged in required
+- After entering the default routes, there should be a page looks like this: \
+  ![Landing Page](/assets/landing.png?raw=true 'Image of default route')
+- The API document was developed with Swagger, it contains all the available routes and requirement for each request
+  [See Details of Our Document](https://health-hero-team-ra.herokuapp.com/api-docs/)
 
-_UPDATE USER BY USERNAME (DEV.)_
-**PATCH '/users/:user_name'**
-body: {
-"user_name": String,
-"password": String,
-"email": String,
-"weight": Number,
-"height": Number
-}
+### 3. GitHub Repository
 
-_Update current user_
-**PATCH '/users/me'**
-Logged in required
-body: {
-"password": String,
-"email": String,
-"weight": Number,
-"height": Number
-}
+https://github.com/DECO7381-Team-Running-Alpaca/health-hero-backend \
+Our team has a GitHun organization [DECO7381-Team-Running-Alpaca](https://github.com/DECO7381-Team-Running-Alpaca) \
+Currently all the repos are private to ensure the academic integrity, please contact [Zhenyuan Li](mailto:zhenyuan.li@uqconnect.edu.au) for authorization.
 
-_DELETE USER BY USERNAME (DEV.)_
-**DELETE '/users/:user_name'**
-body: {
-"user_name": String
-}
+## Running on Local Device
 
-_Delete current user_
-**DELETE '/users/me'**
-Logged in required
+### 1. Preparation
 
-_Add a preference to current user by p_name_
-**POST '/users/preferences/:p_name'**
-Logged in required
+Please prepare the following environment before running the server locally
 
-// TO DO: Following 7 Endpoints
+- [Node.js](https://nodejs.org/en/download/)
+- [MongoDB](https://docs.mongodb.com/manual/installation/)
+- A preferred code editor ([Visual Studio Code](https://code.visualstudio.com/) is recommended)
 
-_Remove a preference from current user by p_name_
-**DELETE '/users/preferences'/:p_name**
-Logged in required
+### Steps
 
-_Get all preferences of current user_
-**GET '/users/preferences'**
-Logged in required
+1. Start MongoDB at your local devices
+2. Navigate to database connection file (src/utils/mongoose.js), and at line 5, change the constant DBurl to process.env.DB_URL_DEV
 
-_Add an allergy to current user by a_name_
-**POST '/users/allergies/:a_name'**
-Logged in required
+```sh
+ const DBurl = process.env.DB_URL_DEV;
+```
 
-_Remove an allergy from current user by a_name_
-**DELETE '/users/allergies/:a_name'**
-Logged in required
+3. In your terminal, run following command, and make sure port 3030 and 27017 are not occupied
 
-_Get all allergies of current user_
-**GET '/users/allergies'**
-Logged in required
+```sh
+ npm install
+ npm run dev
+```
 
-_Add multiple preferences to current user_
-**POST '/users/preferences'**
-body: {
-[preference1, preference2, ...]
-}
+4. After server connected, the console should look like this
+   ![Console screenshot](/assets/console.png?raw=true 'Image of console')
 
-_Add multiple allergies to current user_
-**POST '/users/allergies'**
-body: {
-[allergy1, allergy2, ...]
-}
+## Environment Variable
 
-### Preference (DEV.)
+Please ensure your .env file contains the following key and value pairs.
 
-_Fetch all Preferences_ \
-**GET '/preferences/all'**
+```sh
+PORT=3030
+DB_URL=mongodb+srv://team_access:123qwe@cluster0.owybn.mongodb.net/health-hero-database?retryWrites=true&w=majority
+DB_URL_DEV=mongodb://127.0.0.1:27017/health-hero
+JWT_KEY=HEALTHHERO
+API_KEY=86b3a96f57c149df83551cd3a481adcc
+YOUTUBE_KEY=AIzaSyCQHaHvBZAscOdL_G7kCPXjMVsfi3BVX9Y
+```
 
-_Fetch one Preference using p_name_ \
-**GET '/preferences/:p_name**
-body: {
-p_name: String
-}
+## Contact
 
-_Add a new preference_ \
-**POST '/preferences'** \
-body: {
-"p_name": String
-}
-
-_Delete a Preference using p_name_ \
-**DELETE '/preferences/:p_name'**
-body: {
-"p_name": String
-}
-
-### Allergy (DEV.)
-
-_Fetch all Allergies_ \
-**GET '/allergies/all'**
-
-_Fetch one Allergy using a_name_ \
-**GET '/allergies/:a_name**
-body: {
-a_name: String
-}
-
-_Add a new allergy_ \
-**POST '/allergies'** \
-body: {
-"a_name": String
-}
-
-_Delete a Allergy using a_name_ \
-**DELETE '/allergies/:a_name'**
-body: {
-"a_name": String
-}
+If you encounter any difficulties during running the server or have question about the application, please contact Zhenyuan Li \
+Email:
+zhenyuan.li@uqconnect.edu.au \
+Discord:
+Vincent0Li#6646 \
+GitHub:
+[Zhenyuan-Li](https://github.com/Zhenyuan-Li)
