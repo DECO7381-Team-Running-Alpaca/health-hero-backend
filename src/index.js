@@ -32,7 +32,11 @@ const options = {
 const specs = swaggerJsDoc(options);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
-app.get('/', (req, res) => res.send('<h1>Welcome to Health Hero</h1>'));
+app.get('/', (req, res) =>
+  res.send(
+    '<h1>Welcome to Health Hero</h1> <h3>Developed by Team Running Alpaca</h3> <a href="https://health-hero-team-ra.herokuapp.com/api-docs/">See the API Document !</a>'
+  )
+);
 
 app.use(express.json());
 
