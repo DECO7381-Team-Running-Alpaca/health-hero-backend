@@ -35,7 +35,7 @@ Please prepare the following environment before running the server locally
 - [MongoDB](https://docs.mongodb.com/manual/installation/)
 - A preferred code editor ([Visual Studio Code](https://code.visualstudio.com/) is recommended)
 
-### Steps
+### 2. Steps
 
 1. Start MongoDB at your local devices
 2. Navigate to database connection file (src/utils/mongoose.js), and at line 5, change the constant DBurl to process.env.DB_URL_DEV
